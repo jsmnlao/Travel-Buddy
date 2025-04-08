@@ -18,7 +18,8 @@ Travel Buddy aims to ease the stress of planning a trip. Everyone loves to trave
 
 ## 👩🏽‍💻 Setup & Execution
 
-To run the flask app:
+Dependencies:
 
-- Open a new terminal (the beginning of the line of code should start with `(.venv)`)
-- Type `python -m flask run`, which runs the app.py by default
+- `pip install flask`
+- `pip install flask-login`
+- `pip-install flask-sqlalchemy`
