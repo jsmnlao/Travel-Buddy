@@ -12,11 +12,12 @@
         <div class="col-md-4">
           <div class="text-center">
             <img src="{{url_for('static', filename='images/logo_transparent.png')}}" alt="TravelBuddy Logo" class="img-fluid" />
-            <h3 class="mb-4">Welcome to TravelBuddy</h3>
+            <h3 class="mb-4">Welcome to TravelBuddy!</h3>
+            <h5 class="mg-4">Plan Smart. Travel Better.</h5>
           </div>
           <div class="d-grid gap-3">
-            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">Sign Up</a>
-            <a href="{{ url_for('auth.signup') }}" class="btn btn-outline-primary btn-lg">Log In</a>
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-lg">Sign Up</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">Log In</a>
           </div>
         </div>
       </div>
