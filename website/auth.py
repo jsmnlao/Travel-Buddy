@@ -15,7 +15,7 @@ def login():
 
 @auth.route('/logout')
 def logout():
-    return "<p>logout</p>"
+    return render_template("initial_landing.html")
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
