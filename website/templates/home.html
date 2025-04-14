@@ -41,6 +41,22 @@
         border-color: #adb5bd;
         box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
       }
+      .floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px; /* or left: 20px; for lower-left */
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1050;
+      }
+      .floating-button:hover {
+        background-color: #0069d9;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
     </style>
 
   </head>
@@ -110,11 +126,12 @@
         </a>
       </section>
       
-            <!-- Add Button -->
-      <a href="/create-plan" class="btn btn-primary btn-floating" id="floating-button">
-        <i class="bi bi-plus-circle-fill"></i>
-        </a>
 
+      <!-- Add Button -->
+      <a href="/create-plan" class="btn btn-primary rounded-circle shadow floating-button" title="Add New Plan">
+        <i class="bi bi-journal-plus"></i>
+    </a>
+  
   
       <!-- Footer -->
       <footer class="footer mt-auto">
@@ -122,9 +139,6 @@
           <p>© 2025 TravelBuddy. All rights reserved.</p>
         </div>
       </footer>
-
-
-  
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
