@@ -2,9 +2,6 @@ from flask import Blueprint, render_template
 
 views = Blueprint('views', __name__)
 
-# the home page should be /home after user authentication is implemented
-# the initial_landing page route would be '/' instead
-# this is temporary for now
 @views.route('/')
 def landing():
     return render_template("landing.html")
@@ -23,4 +20,4 @@ def explore():
 
 @views.route('/signup')
 def signup():
-    pass
+    return render_template("signup.html")
