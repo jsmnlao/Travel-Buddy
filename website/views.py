@@ -21,3 +21,8 @@ def explore():
 @views.route('/signup')
 def signup():
     return render_template("signup.html")
+
+@views.route('/create-plan')
+def create_plan():
+    return render_template("create-plan.html")
+

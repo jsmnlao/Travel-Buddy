@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Plan - TravelBuddy{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <style>
+        .hero {
+        background: #f8f9fa;
+        padding: 40px 0;
+        text-align: left;
+      }
+      .features {
+        padding: 60px 0;
+      }
+      .footer {
+        background: #f8f9fa;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 14px;
+        color: #6c757d;
+      }
+      .logo-nav {
+        width: 180px;
+        height: 60px;
+        object-fit: contain;   
+      }
+      .card {
+        border-radius: 25px;
+        border: 1px solid #dee2e6;
+      }
+    </style>
+
+  </head>
+  <body class="min-vh-100 d-flex flex-column">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <a class="navbar-brand" href="/home">
+        <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top logo-nav" alt="Logo" />
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link mr-3" id="home" href="/home">Home</a>
+          <a class="nav-item nav-link" id="explore" href="/explore">Explore</a>
+        </div>
+        <div class="ml-auto">
+          <a class="btn btn-outline-primary" id="logout" href="/" role="button">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero (NEED TO UPDATE BASED ON DATATBASE) -->
+    <section class="hero">
+        <div class="container">
+          <h1 class="display-4 font-weight-bold">Create a New Plan</h1>
+        </div>
+      </section>
+
+       <!-- ChatGPT (TO-DO: INTEGRATE) -->
+      <section class="container my-5">
+        <div class="card mb-4 p-4">
+          <h4 class="mb-4">Have no idea where to start? Let AI help!</h4>
+          <div class="text-center">
+            <button class="btn btn-primary btn-lg">Generate My Itinerary</button>
+            <p class="text-muted mt-2">Let Travel Buddy create a suggested plan based on your details</p>
+          </div>
+        </div>
+      </section>
+  
+      <section>
+        <div class="container">
+        
+          <!-- Trip Details Form (NEEDS TO CONNECT TO DATABASE) -->
+          <div class="card mb-4 p-4">
+            <h4 class="mb-3">Trip Details</h4>
+            <form>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="destination">Destination</label>
+                  <input type="text" class="form-control" id="destination" placeholder="e.g. Tokyo, Japan">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="endDate">End Date</label>
+                  <input type="date" class="form-control" id="endDate">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="travelers">Number of Travelers</label>
+                  <input type="number" class="form-control" id="travelers" value="1" min="1">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="budget">Budget ($)</label>
+                  <input type="number" class="form-control" id="budget" placeholder="Enter max budget">
+                </div>
+              </div>
+            </form>
+          </div>
+        
+          <!-- Manual Trip Planning -->
+          <div class="card mb-4 p-4">
+            <h4 class="mb-3">Customize Your Trip</h4>
+            <div class="form-group">
+              <label for="flights">Add Flight Info</label>
+              <input type="text" class="form-control" id="flights" placeholder="Airline, Flight #, Time">
+            </div>
+            <div class="form-group">
+              <label for="hotel">Hotel Information</label>
+              <input type="text" class="form-control" id="hotel" placeholder="Hotel name, address">
+            </div>
+            <div class="form-group">
+              <label for="activities">Add Activities / Excursions</label>
+              <textarea class="form-control" id="activities" rows="3" placeholder="List your plans..."></textarea>
+            </div>
+          </div>
+        
+          <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
+          <div class="card p-4 mb-5">
+            <h4 class="mb-3 font-weight-bold">Trip Overview</h4>
+            <ul class="list-group">
+              <li class="list-group-item">📍 Destination: <strong id="preview-destination">test</strong></li>
+              <li class="list-group-item">📅 Dates: <strong id="preview-dates">test</strong></li>
+              <li class="list-group-item">✈️ Flight: <strong id="preview-flight">test</strong></li>
+              <li class="list-group-item">🏨 Hotel: <strong id="preview-hotel">test</strong></li>
+              <li class="list-group-item">🎉 Activities: <strong id="preview-activities">test</strong></li>
+            </ul>
+          </div>
+        
+          <!-- Save -->
+          <div class="text-center mb-4">
+            <button class="btn btn-success mr-2">Save Plan</button>
+            <button class="btn btn-danger">Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer mt-auto">
+        <div class="container">
+          <p>© 2025 TravelBuddy. All rights reserved.</p>
+        </div>
+      </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
