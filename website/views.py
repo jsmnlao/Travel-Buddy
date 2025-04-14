@@ -6,12 +6,12 @@ views = Blueprint('views', __name__)
 # the initial_landing page route would be '/' instead
 # this is temporary for now
 @views.route('/')
+def landing():
+    return render_template("landing.html")
+
+@views.route('/home')
 def home():
     return render_template("home.html")
-
-# @views.route('/home')
-# def home():
-#     return render_template("home.html")
 
 @views.route('/plan')
 def plan():
@@ -20,3 +20,7 @@ def plan():
 @views.route('/explore')
 def explore():
     return render_template("explore.html")
+
+@views.route('/signup')
+def signup():
+    pass
