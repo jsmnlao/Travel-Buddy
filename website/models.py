@@ -1,7 +1,7 @@
 from . import db
 from flask_login import UserMixin
 
-# Represents database tables in TravelBuddy
+# Represents database tables in Travel Buddy
 
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
