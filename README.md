@@ -29,5 +29,5 @@ To execute this project on your machine:
 1. Clone the reposity with `git clone https://github.com/jsmnlao/Travel-Buddy.git`
 2. Download and install Python on your device. You can follow the instructions [here](https://www.python.org/downloads/).
 3. Navigate to the project through your CLI
-4. Using Python, run the `main.py` file
+4. Start the project with `python3 main.py`
 5. Following the instructions on your CLI, open the website through the port given

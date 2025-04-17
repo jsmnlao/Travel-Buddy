@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request
 
+# auth.py handles the HTTP requests
+
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])

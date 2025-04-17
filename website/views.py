@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template
 
+# views.py are end points for the url to navigate around the webpage
+
 views = Blueprint('views', __name__)
 
 @views.route('/')
