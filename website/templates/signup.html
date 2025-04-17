@@ -3,16 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
+    <title>Travel Buddy - Sign Up</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   </head>
-  <body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+
+  <body class="bg-light py-5">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-4">
-          <div class="'text-center">
-            <img src="{{url_for('static', filename='images/logo.png')}}" alt="Travel Buddy Logo" class="img-fluid" />
+          <div class="text-center mb-3">
+            <img src="{{url_for('static', filename='images/logo-transparent.png')}}" alt="Travel Buddy Logo" class="img-fluid w-50" />
           </div>
+          
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+              <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
           <form method="POST" class="p-4 bg-white shadow rounded">
             <h3 class="text-center mb-4">Sign Up</h3>
             <div class="form-group mb-3">
@@ -28,7 +41,7 @@
               <input type="password1" class="form-control" id="password1_signup" name="password1_signup" placeholder="Enter password" required />
             </div>
             <div class="form-group mb-3">
-              <label for="password2">Password</label>
+              <label for="password2">Confirm Password</label>
               <input type="password2" class="form-control" id="password2_signup" name="password2_signup" placeholder="Confirm password" required />
             </div>
             <button type="submit" class="btn btn-primary w-100">Submit</button>

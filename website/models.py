@@ -9,11 +9,12 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(200), unique=True)
     password = db.Column(db.String(200))
 
-    trips = db.relationship('Trip', backref='user')             # list of all trips
-    itineraries = db.relationship('Itinerary', backref='user')  # list of all itineraries
-    flights = db.relationship('Flight', backref='user')         # list of all flights
-    hotels = db.relationship('Hotel', backref='user')           # list of all hotels
+    #trips = db.relationship('Trip', backref='user')             # list of all trips
+    #itineraries = db.relationship('Itinerary', backref='user')  # list of all itineraries
+    #flights = db.relationship('Flight', backref='user')         # list of all flights
+    #hotels = db.relationship('Hotel', backref='user')           # list of all hotels
 
+'''
 class Trip(db.Model):
     trip_id = db.Column(db.Integer, primary_key=True)
     destination = db.Column(db.String(200), nullable=False)
@@ -57,3 +58,4 @@ class Hotel(db.Model):
     hotel_id = db.Column(db.Integer, primary_key=True)
     hotel_name = db.Column(db.String(200), nullable=False)
     location = db.Column(db.String(200), nullable=False)
+'''
