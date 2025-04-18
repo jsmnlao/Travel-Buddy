@@ -28,6 +28,17 @@ def view_plan(trip_id):
     return render_template("plan.html", user=current_user, trip=trip)
 
 
+@views.route('/edit-plan/<int:trip_id>')
+@login_required
+def edit_plan(trip_id):
+    trip = Trip.query.get_or_404(trip_id)
+
+    if trip.user_id != current_user.id:
+        abort(403)
+
+    return render_template("plan.html", user=current_user, trip=trip)
+
+
 @views.route('/explore')
 def explore():
     return render_template("explore.html", user=current_user)
