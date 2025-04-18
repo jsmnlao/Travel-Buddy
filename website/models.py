@@ -21,6 +21,8 @@ class Trip(db.Model):
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))           # each trip belongs to a user
+    number_travelers = db.Column(db.Integer, nullable=False)
+    budget = db.Column(db.Integer, nullable=False)
     
     itinerary = db.relationship('Itinerary', backref='trip', uselist=False)  # one-to-one relationship  
 
@@ -50,6 +52,8 @@ class Booking(db.Model):
 
 class Flight(db.Model):
    flight_id = db.Column(db.Integer, primary_key=True)
+   airline = db.Column(db.String(200), nullable=False)
+   flight_number = db.Column(db.Integer, nullable=False)
    departure_date = db.Column(db.Date, nullable=False)
    departure_time = db.Column(db.Time, nullable=False)
    destination = db.Column(db.String(200), nullable=False)
