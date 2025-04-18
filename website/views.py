@@ -26,8 +26,6 @@ def view_plan(trip_id):
         abort(403)
 
     return render_template("plan.html", user=current_user, trip=trip)
-<<<<<<< HEAD
-=======
 
 
 @views.route('/edit-plan/<int:trip_id>')
@@ -39,7 +37,6 @@ def edit_plan(trip_id):
         abort(403)
 
     return render_template("plan.html", user=current_user, trip=trip)
->>>>>>> 4dd3c699e31a393eb172b0719d5ef072c700fa07
 
 
 @views.route('/explore')
