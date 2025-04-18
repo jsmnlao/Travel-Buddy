@@ -65,17 +65,21 @@
       </div>
     </nav>
 
-    <!-- Hero (NEED TO UPDATE BASED ON DATATBASE) -->
+    <!-- Hero (Dynamic) -->
     <section class="hero">
         <div class="container">
-          <h1 class="display-4 font-weight-bold">Trip Plan Name</h1>
-          <p class="lead mt-3 mb-4">Dates: August 2, 2025 - December 15, 2025</p>
+          <h1 class="display-4 font-weight-bold">{{trip.name}}</h1>
+          <p class="lead mt-3 mb-4">
+            Dates:
+            {{ trip.start_date.strftime('%B %d, %Y') }} -
+            {{ trip.end_date.strftime('%B %d, %Y') }}
+          </p>
         </div>
       </section>
   
-      <!-- Plans (NEED TO UPDATE BASED ON DATATBASE) -->
+      <!-- Plans (Dynamic) -->
       <section class="container my-5">
-        <p>Some info</p>
+        <p>{{trip.description}}</p>
       </section>
       
       <!-- Footer -->
