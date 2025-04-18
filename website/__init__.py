@@ -1,7 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+import os
 from flask_login import LoginManager
+from dotenv import load_dotenv
+
+load_dotenv()
+open_api_key = os.getenv("OPENAI_API_KEY")
 
 db = SQLAlchemy()
 DB_NAME = "travelbuddy.db"

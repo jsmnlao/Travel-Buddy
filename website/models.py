@@ -22,14 +22,13 @@ class Trip(db.Model):
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))           # each trip belongs to a user
-    
+    public = db.Column(db.Boolean, default=False, nullable=False)  # for sharing on explore page (False = private, True = public)
     itinerary = db.relationship('Itinerary', backref='trip', uselist=False)  # one-to-one relationship  
 
 
 class Itinerary(db.Model):
     __tablename__ = 'itinerary'
     id = db.Column(db.Integer, primary_key=True)
-    
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))   # each trip belongs to a user
     trip_id = db.Column(db.Integer, db.ForeignKey('trip.id'))
     activities = db.relationship('Activity', backref='itinerary', cascade="all, delete-orphan")    # many activities in itinerary
@@ -41,13 +40,11 @@ class Activity(db.Model):
     location = db.Column(db.String(200), nullable=False)
     date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String(500))
-
     itinerary_id = db.Column(db.Integer, db.ForeignKey('itinerary.id'))
 
 class Booking(db.Model):
     __tablename__ = 'booking'
     id = db.Column(db.Integer, primary_key=True)
-
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     trip_id = db.Column(db.Integer, db.ForeignKey('trip.id'))
     flight_id = db.Column(db.Integer, db.ForeignKey('flight.flight_id'))

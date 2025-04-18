@@ -23,6 +23,7 @@ Dependencies:
 - `pip install flask`
 - `pip install flask-login`
 - `pip install flask-sqlalchemy`
+- `pip install openai`
 
 To execute this project on your machine:
 
