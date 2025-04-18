@@ -14,14 +14,21 @@ def login():
         email = request.form.get('email_login')
         password = request.form.get('password_login')
 
-        # validate email and password
-        # if true, login user to account
+        user = User.query.filter_by(email=email).first()
+        
+        if user:
+            if check_password_hash(user.password, password):
+                return redirect(url_for('views.home'))
+            else:
+                flash('Incorrect password, try again.', category='error')
+        else:
+            flash('Email does not exist.', category='error')
 
     return render_template("login.html")
 
 @auth.route('/logout')
 def logout():
-    return render_template("initial_landing.html")
+    return render_template("landing.html")
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -31,12 +38,16 @@ def signup():
         password1 = request.form.get('password1_signup')
         password2 = request.form.get('password2_signup')
 
+        user = User.query.filter_by(email=email).first()
+
         # quality checks
-        if len(email) < 4:
+        if user:
+            flash('Email already in use.', category='error')
+        elif len(email) < 4:
             flash('Email must be greater than 4 characters.', category='error')
-        if len(name) < 1:
+        elif len(name) < 1:
             flash('Name must be greater than 1 character.', category='error')
-        if password1 != password2:
+        elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
@@ -44,7 +55,6 @@ def signup():
             new_user = User(email=email, name=name, password=generate_password_hash(password1, method='pbkdf2:sha256'))
             db.session.add(new_user)
             db.session.commit()
-            flash('Account created!', category='success')
             return redirect(url_for('views.home'))
 
     return render_template("signup.html")
