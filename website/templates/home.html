@@ -66,6 +66,10 @@
         letter-spacing: 1px;
         text-transform: uppercase;
       }
+      .card {
+        border-radius: 25px;
+        border: 1px solid #dee2e6;
+      }
     </style>
 
   </head>
@@ -96,50 +100,34 @@
         </div>
       </section>
   
-      <!-- Plans (NEED TO UPDATE BASED ON DATATBASE) -->
+      <!-- Plans - Dynamic -->
       <section class="container my-5">
-
-        <a href="/plan" class="text-decoration-none text-dark">
-            <div class="plan-card mb-4 p-4 shadow-sm">
-                <h5 class="font-weight-bold mb-2">Asia Trip</h5>
-                <p>Dates: x - z</p>
-            </div>
-        </a>
-      
-        <a href="/plan" class="text-decoration-none text-dark">
-            <div class="plan-card mb-4 p-4 shadow-sm">
-                <h5 class="font-weight-bold mb-2">RoadTrip: Las Vegas</h5>
-                <p>Dates: x - z</p>
-            </div>
-        </a>
-      
-        <a href="/plan" class="text-decoration-none text-dark">
-            <div class="plan-card mb-4 p-4 shadow-sm">
-                <h5 class="font-weight-bold mb-2">Greece with the Girlies</h5>
-                <p>Dates: x - z</p>
-            </div>
-        </a>
-
-        <a href="/plan" class="text-decoration-none text-dark">
-            <div class="plan-card mb-4 p-4 shadow-sm">
-                <h5 class="font-weight-bold mb-2">Test Trip</h5>
-                <p>Dates: x - z</p>
-            </div>
-        </a>
-
-        <a href="/plan" class="text-decoration-none text-dark">
-            <div class="plan-card mb-4 p-4 shadow-sm">
-                <h5 class="font-weight-bold mb-2">Test Trip</h5>
-                <p>Dates: x - z</p>
-            </div>
-        </a>
+        <!-- If there are trips, populate them -->
+        {% if trips %}
+          {% for trip in trips %}
+            <a href="{{ url_for('view_plan', trip_id=trip.id) }}" class="text-decoration-none text-dark">
+              <div class="plan-card mb-4 p-4 shadow-sm">
+                <h5 class="font-weight-bold mb-2">{{ trip.name }}</h5>
+                <p>Dates: {{ trip.start_date.strftime('%b %d, %Y') }} - {{ trip.end_date.strftime('%b %d, %Y') }}</p>
+              </div>
+            </a>
+          {% endfor %}
+        <!-- If there are no trips, encourage user to create a trip -->
+        {% else %}
+          <div class="card mb-4 p-4 text-center text-muted">
+            <p>No trips found. Create your first plan to get started!</p>
+            <a href="/create-plan" class="btn btn-primary mt-3 d-inline"> 
+              <i class="bi bi-journal-plus mr-2"></i>
+              Create a Plan
+            </a>
+          </div>
+        {% endif %}
       </section>
       
-
       <!-- Add Button -->
       <a href="/create-plan" class="btn btn-primary rounded-circle shadow floating-button" title="Add New Plan">
         <i class="bi bi-journal-plus"></i>
-    </a>
+      </a>
   
   
       <!-- Footer -->
