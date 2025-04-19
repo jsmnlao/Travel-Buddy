@@ -105,7 +105,11 @@
         <!-- If there are trips, populate them -->
         {% if trips %}
           {% for trip in trips %}
+<<<<<<< HEAD
+            <a href="{{ url_for('view_plan', trip_id=trip.id) }}" class="text-decoration-none text-dark">
+=======
             <a href="{{ url_for('views.view_plan', trip_id=trip.id) }}" class="text-decoration-none text-dark">
+>>>>>>> 4dd3c699e31a393eb172b0719d5ef072c700fa07
               <div class="plan-card mb-4 p-4 shadow-sm">
                 <h5 class="font-weight-bold mb-2">{{ trip.name }}</h5>
                 <p>Dates: {{ trip.start_date.strftime('%b %d, %Y') }} - {{ trip.end_date.strftime('%b %d, %Y') }}</p>
@@ -116,10 +120,17 @@
         {% else %}
           <div class="card mb-4 p-4 text-center text-muted">
             <p>No trips found. Create your first plan to get started!</p>
+<<<<<<< HEAD
+            <a href="/create-plan" class="btn btn-primary mt-3 d-inline"> 
+              <i class="bi bi-journal-plus mr-2"></i>
+              Create a Plan
+            </a>
+=======
             <button class="btn btn-primary mt-3 d-inline"> 
               <i class="bi bi-journal-plus mr-2"></i>
               Create a Plan
             </button>
+>>>>>>> 4dd3c699e31a393eb172b0719d5ef072c700fa07
           </div>
         {% endif %}
       </section>
