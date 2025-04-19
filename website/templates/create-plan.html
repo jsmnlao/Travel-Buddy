@@ -40,7 +40,7 @@
   <body class="min-vh-100 d-flex flex-column">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <a class="navbar-brand">
-        <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top logo-nav"/>
+        <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top logo-nav" />
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
@@ -64,36 +64,34 @@
     </section>
 
     <section>
-      <div class="container my-5">
+      <form method="POST" action="{{ url_for('views.save_plan') }}" class="container my-5">
         <!-- Trip Details Form (NEEDS TO CONNECT TO DATABASE) -->
         <div class="card mb-4 p-4">
           <h4 class="mb-3">Trip Details</h4>
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="destination">Destination</label>
-                <input type="text" class="form-control" id="destination" placeholder="e.g. Tokyo, Japan" />
-              </div>
-              <div class="form-group col-md-3">
-                <label for="startDate">Start Date</label>
-                <input type="date" class="form-control" id="startDate" />
-              </div>
-              <div class="form-group col-md-3">
-                <label for="endDate">End Date</label>
-                <input type="date" class="form-control" id="endDate" />
-              </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="destination">Destination</label>
+              <input type="text" class="form-control" name="destination" id="destination" placeholder="e.g. Tokyo, Japan" value="Hong Kong" />
             </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="travelers">Number of Travelers</label>
-                <input type="number" class="form-control" id="travelers" value="1" min="1" />
-              </div>
-              <div class="form-group col-md-4">
-                <label for="budget">Budget ($)</label>
-                <input type="number" class="form-control" id="budget" placeholder="Enter max budget" />
-              </div>
+            <div class="form-group col-md-3">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="form-control" name="startDate" id="startDate" />
             </div>
-          </form>
+            <div class="form-group col-md-3">
+              <label for="endDate">End Date</label>
+              <input type="date" class="form-control" name="endDate" id="endDate" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="travelers">Number of Travelers</label>
+              <input type="number" class="form-control" name="travelers" id="travelers" value="1" min="1" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="budget">Budget ($)</label>
+              <input type="number" class="form-control" name="budget" id="budget" placeholder="Enter max budget" value="10000" />
+            </div>
+          </div>
         </div>
 
         <!-- Flight Information -->
@@ -106,20 +104,20 @@
           </div>
           <div class="form-group">
             <label for="airline">Airline Info</label>
-            <input type="text" class="form-control" id="airline" placeholder="Airline Name" />
+            <input type="text" class="form-control" name="airline" id="airline" placeholder="Airline Name" value="United" />
           </div>
           <div class="form-group">
             <label for="flight_number">Flight Number</label>
-            <input type="text" class="form-control" id="flight_number" placeholder="Flight #" />
+            <input type="text" class="form-control" name="flight_number" id="flight_number" placeholder="Flight #" value="12345" />
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="depart_date">Departure Date</label>
-              <input type="date" class="form-control" id="depart_date" />
+              <input type="date" class="form-control" name="depart_date" id="depart_date" />
             </div>
             <div class="form-group col-md-6">
               <label for="depart_time">Departure Time</label>
-              <input type="time" class="form-control" id="depart_time" />
+              <input type="time" class="form-control" name="depart_time" id="depart_time" />
             </div>
           </div>
         </div>
@@ -134,11 +132,11 @@
           </div>
           <div class="form-group">
             <label for="hotel_name">Hotel Name</label>
-            <input type="text" class="form-control" id="hotel_name" placeholder="eg. Hilton Hotels" />
+            <input type="text" class="form-control" name="hotel_name" id="hotel_name" placeholder="eg. Hilton Hotels" value="Ritz Carlton" />
           </div>
           <div class="form-group">
             <label for="hotel_location">Location</label>
-            <input type="text" class="form-control" id="hotel_location" placeholder="Address" />
+            <input type="text" class="form-control" name="hotel_location" id="hotel_location" placeholder="Address" value="123 Street" />
           </div>
         </div>
 
@@ -155,19 +153,19 @@
             <div class="activity-section">
               <div class="form-group">
                 <label for="activity_name">Activity Name</label>
-                <input type="text" class="form-control" id="activity_name" placeholder="e.g. Try local foods! " />
+                <input type="text" class="form-control" name="activity_name" id="activity_name" placeholder="e.g. Try local foods! " value="Eat dim sum" />
               </div>
               <div class="form-group">
                 <label for="activity_location">Location</label>
-                <input type="text" class="form-control" id="activity_location" placeholder="Address" />
+                <input type="text" class="form-control" name="activity_location" id="activity_location" placeholder="Address" value="King's Road" />
               </div>
               <div class="form-group">
                 <label for="activity_date">Activity Date</label>
-                <input type="date" class="form-control" id="activity_date" />
+                <input type="date" class="form-control" name="activity_date" id="activity_date" />
               </div>
               <div class="form-group">
                 <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" id="activity_description" rows="3" placeholder="Describe activity..."></textarea>
+                <textarea class="form-control" name="activity_description" id="activity_description" rows="3" placeholder="Describe activity..." value="Eat food!"></textarea>
               </div>
             </div>
           </div>
@@ -181,19 +179,19 @@
 
             newActivity.innerHTML = `<hr> <div class="form-group">
                 <label for="activity_name">Activity Name</label>
-                <input type="text" class="form-control" placeholder="e.g. Try local foods!" />
+                <input type="text" name="activity_name[]" id="activity_name" class="form-control" placeholder="e.g. Try local foods!" />
               </div>
               <div class="form-group">
                 <label for="activity_location">Location</label>
-                <input type="text" class="form-control" placeholder="Address" />
+                <input type="text" name="activity_location[]" id="activity_location" class="form-control" placeholder="Address" />
               </div>
               <div class="form-group">
                 <label for="activity_date">Activity Date</label>
-                <input type="date" class="form-control" />
+                <input type="date" name="activity_date[]" id="activity_date" class="form-control" />
               </div>
               <div class="form-group">
                 <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" rows="3" placeholder="Describe activity..."></textarea>
+                <textarea class="form-control" rows="3" name="activity_description[]" id="activity_description" placeholder="Describe activity..."></textarea>
               </div>`;
             document.getElementById('activity-container').appendChild(newActivity);
           });
@@ -213,14 +211,14 @@
 
         <!-- Save -->
         <div class="text-center mb-4">
-          <a href="/home">
-            <button class="btn btn-success mr-2">Save Plan</button>
+          <a>
+            <button type="submit" class="btn btn-success mr-2">Save Plan</button>
           </a>
           <a href="/home">
             <button class="btn btn-danger">Cancel</button>
           </a>
         </div>
-      </div>
+      </form>
     </section>
 
     <!-- Footer -->
