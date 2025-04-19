@@ -47,8 +47,8 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     trip_id = db.Column(db.Integer, db.ForeignKey('trip.id'))
-    flight_id = db.Column(db.Integer, db.ForeignKey('flight.flight_id'))
-    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.hotel_id'))
+    flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'))
+    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
 
 
 class Flight(db.Model):
