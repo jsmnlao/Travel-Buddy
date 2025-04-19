@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, request, redirect
+from flask import current_app, Blueprint, render_template, abort, request, redirect
 from flask_login import login_required, current_user
 from .models import Trip
 import sqlite3
@@ -54,7 +54,7 @@ def create_plan():
     return render_template("create-plan.html", user=current_user)
 
 def get_db_connection():
-    conn = sqlite3.connect('travelbuddy.db')
+    conn = sqlite3.connect(current_app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
     return conn
 
