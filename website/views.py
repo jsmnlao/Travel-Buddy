@@ -89,21 +89,21 @@ def save_plan():
             INSERT INTO trip (
             destination, start_date, end_date, travelers, budget)
             VALUES (?, ?, ?, ?, ?)"""
-        conn.execute(insert_trip_query, (destination, start_date, end_date, travelers, budget, airline, flight_number, depart_date, depart_time))
+        conn.execute(insert_trip_query, (destination, start_date, end_date, travelers, budget))
         trip_id = cursor.lastrowid
 
         insert_flight_query = """
-            INSERT INTO flights (airline, flight_number, depart_date, depart_time, trip_id)
+            INSERT INTO flight (airline, flight_number, departure_date, departure_time, trip_id)
             VALUES (?, ?, ?, ?, ?)"""
         conn.execute(insert_flight_query, (airline, flight_number, depart_date, depart_time, trip_id))
 
         insert_hotel_query = """
-            INSERT INTO hotels (hotel_name, location, trip_id)
+            INSERT INTO hotel (hotel_name, location, trip_id)
             VALUES (?, ?, ?)"""
-        conn.execute(insert_hotel_query, (hotel_name, hotel_location))
+        conn.execute(insert_hotel_query, (hotel_name, hotel_location, trip_id))
 
         insert_activities_query = """
-            INSERT INTO activities (name, location, date, description, trip_id)
+            INSERT INTO activity (name, location, date, description, trip_id)
             VALUES (?, ?, ?, ?, ?)"""
         for name, location, date, description in zip(activity_names, activity_locations, activity_dates, activity_descriptions):
             conn.execute(insert_activities_query, (name, location, date, description, trip_id))
