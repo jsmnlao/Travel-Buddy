@@ -52,3 +52,6 @@ def signup():
 def create_plan():
     return render_template("create-plan.html", user=current_user)
 
+# @views.route('save-plan', methods=['POST'])
+# def save_plan():
+

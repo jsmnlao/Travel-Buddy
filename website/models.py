@@ -21,10 +21,12 @@ class Trip(db.Model):
     destination = db.Column(db.String(200), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))           # each trip belongs to a user
+    travelers = db.Column(db.Integer)
+    budget = db.Column(db.Integer)
     public = db.Column(db.Boolean, default=False, nullable=False)  # for sharing on explore page (False = private, True = public)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))           # each trip belongs to a user
     itinerary = db.relationship('Itinerary', backref='trip', uselist=False)  # one-to-one relationship  
-
 
 class Itinerary(db.Model):
     __tablename__ = 'itinerary'
@@ -50,13 +52,13 @@ class Booking(db.Model):
     flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'))
     hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
 
-
 class Flight(db.Model):
    __tablename__ = 'flight'
    id = db.Column(db.Integer, primary_key=True)
+   airline = db.Column(db.String(200))
+   flight_number = db.Column(db.Integer, nullable=False)
    departure_date = db.Column(db.Date, nullable=False)
    departure_time = db.Column(db.Time, nullable=False)
-   destination = db.Column(db.String(200), nullable=False)
 
 class Hotel(db.Model):
     __tablename__ = 'hotel'
