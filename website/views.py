@@ -54,7 +54,7 @@ def create_plan():
     return render_template("create-plan.html", user=current_user)
 
 def get_db_connection():
-    conn = sqlite3.connect('instance/travelbuddy.db')
+    conn = sqlite3.connect('travelbuddy.db')
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -90,23 +90,27 @@ def save_plan():
             destination, start_date, end_date, travelers, budget)
             VALUES (?, ?, ?, ?, ?)"""
         conn.execute(insert_trip_query, (destination, start_date, end_date, travelers, budget))
+        conn.commit()
         trip_id = cursor.lastrowid
 
         insert_flight_query = """
             INSERT INTO flight (airline, flight_number, departure_date, departure_time, trip_id)
             VALUES (?, ?, ?, ?, ?)"""
         conn.execute(insert_flight_query, (airline, flight_number, depart_date, depart_time, trip_id))
+        conn.commit()
 
         insert_hotel_query = """
             INSERT INTO hotel (hotel_name, location, trip_id)
             VALUES (?, ?, ?)"""
         conn.execute(insert_hotel_query, (hotel_name, hotel_location, trip_id))
+        conn.commit()
 
         insert_activities_query = """
             INSERT INTO activity (name, location, date, description, trip_id)
             VALUES (?, ?, ?, ?, ?)"""
         for name, location, date, description in zip(activity_names, activity_locations, activity_dates, activity_descriptions):
             conn.execute(insert_activities_query, (name, location, date, description, trip_id))
+            conn.commit()
 
     except Exception as ex:
         print('in except')
@@ -115,7 +119,6 @@ def save_plan():
 
     finally:
         print('in finally')
-        conn.commit()
         conn.close()
         
     print('about to flash message and return home')

@@ -25,12 +25,12 @@ def create_app():
     from .models import User
 
     with app.app_context():
-        if not path.exists('instance/' + DB_NAME):
+        if not path.exists(DB_NAME):
             db.create_all()
             print("Database created successfully")
 
     login_manager = LoginManager()
-    login_manager.longin_view = 'auth.login'
+    login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
     @login_manager.user_loader
