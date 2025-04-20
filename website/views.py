@@ -32,7 +32,7 @@ def view_plan(trip_id):
     return render_template("plan.html", user=current_user, trip=trip)
 
 
-@views.route('/edit-plan/<int:trip_id>')
+@views.route('/edit-plan/<int:trip_id>', methods=['POST'])
 @login_required
 def edit_plan(trip_id):
     trip = Trip.query.get_or_404(trip_id)
@@ -41,6 +41,28 @@ def edit_plan(trip_id):
         abort(403)
 
     return render_template("plan.html", user=current_user, trip=trip)
+
+
+@views.route('/delete-plan/<int:trip_id>', methods=['POST'])
+@login_required
+def delete_plan(trip_id):
+    trip = Trip.query.get_or_404(trip_id)
+
+    if trip.user_id != current_user.id:
+        abort(403)
+        
+    try:
+        db.session.delete(trip)
+        db.session.commit()
+        flash('Your trip has deleted successfully!', 'success')
+        return redirect(url_for('views.home'))
+        # return render_template("home.html", user=current_user, trip=trip)
+    except Exception as ex:
+        print('Exception occured when deleting: ', ex)
+        flash('An occured while performing action,', 'danger')
+        return redirect(url_for('views.home'))
+        # return render_template("home.html", user=current_user, trip=trip)
+        
 
 @views.route('/explore')
 def explore():
@@ -157,7 +179,6 @@ def save_plan():
 
     finally:
         print('in finally')
-
         
     print('about to flash message and return home')
     flash('Plan created successfully!', category='success')
