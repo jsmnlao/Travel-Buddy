@@ -84,17 +84,19 @@
       <a class="navbar-brand">
         <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top logo-nav" />
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+      <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
+      </button>      
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          <a class="nav-item nav-link mr-3" id="home" href="/home">Home</a>
-          <a class="nav-item nav-link" id="explore" href="/explore">Explore</a>
+          <a class="nav-item nav-link ms-3" id="home" href="/home">Home</a>
+          <a class="nav-item nav-link ms-3" id="explore" href="/explore">Explore</a>
         </div>
-        <div class="ml-auto">
-          <a class="btn btn-outline-primary" id="logout" href="/" role="button">Logout</a>
-        </div>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="btn btn-outline-primary ms-3" id="logout" href="/" role="button">Logout</a>
+          </li>
+        </ul>
       </div>
     </nav>
 
