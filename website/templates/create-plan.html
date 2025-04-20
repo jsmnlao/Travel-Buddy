@@ -152,20 +152,20 @@
           <div id="activity-container">
             <div class="activity-section">
               <div class="form-group">
-                <label for="activity_name">Activity Name</label>
-                <input type="text" class="form-control" name="activity_name" id="activity_name" placeholder="e.g. Try local foods! " value="Eat dim sum" />
+                <label for="activity_name[]">Activity Name</label>
+                <input type="text" class="form-control" name="activity_name[]"  placeholder="e.g. Try local foods! " value="Eat dim sum" />
               </div>
               <div class="form-group">
-                <label for="activity_location">Location</label>
-                <input type="text" class="form-control" name="activity_location" id="activity_location" placeholder="Address" value="King's Road" />
+                <label for="activity_location[]">Location</label>
+                <input type="text" class="form-control" name="activity_location[]" placeholder="Address" value="King's Road" />
               </div>
               <div class="form-group">
-                <label for="activity_date">Activity Date</label>
-                <input type="date" class="form-control" name="activity_date" id="activity_date" />
+                <label for="activity_date[]">Activity Date</label>
+                <input type="date" class="form-control" name="activity_date[]" />
               </div>
               <div class="form-group">
-                <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" name="activity_description" id="activity_description" rows="3" placeholder="Describe activity..." value="Eat food!"></textarea>
+                <label for="activity_description[]">Add Description (optional)</label>
+                <textarea class="form-control" name="activity_description[]" rows="3" placeholder="Describe activity...">Eat food!</textarea>
               </div>
             </div>
           </div>
@@ -179,19 +179,19 @@
 
             newActivity.innerHTML = `<hr> <div class="form-group">
                 <label for="activity_name">Activity Name</label>
-                <input type="text" name="activity_name[]" id="activity_name" class="form-control" placeholder="e.g. Try local foods!" />
+                <input type="text" name="activity_name[]" class="form-control" placeholder="e.g. Try local foods!" />
               </div>
               <div class="form-group">
                 <label for="activity_location">Location</label>
-                <input type="text" name="activity_location[]" id="activity_location" class="form-control" placeholder="Address" />
+                <input type="text" name="activity_location[]" class="form-control" placeholder="Address" />
               </div>
               <div class="form-group">
                 <label for="activity_date">Activity Date</label>
-                <input type="date" name="activity_date[]" id="activity_date" class="form-control" />
+                <input type="date" name="activity_date[]" class="form-control" />
               </div>
               <div class="form-group">
                 <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" rows="3" name="activity_description[]" id="activity_description" placeholder="Describe activity..."></textarea>
+                <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
               </div>`;
             document.getElementById('activity-container').appendChild(newActivity);
           });

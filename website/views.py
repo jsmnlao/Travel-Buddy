@@ -1,8 +1,10 @@
 from flask import current_app, Blueprint, render_template, abort, request, redirect
 from flask_login import login_required, current_user
-from .models import Trip
+from .models import User, Trip, Flight, Activity, Hotel, Itinerary, Booking
 import sqlite3
+from datetime import datetime
 from flask import flash
+from . import db
 
 # views.py are end points for the url to navigate around the webpage
 
@@ -83,43 +85,71 @@ def save_plan():
     conn = get_db_connection()
     cursor = conn.cursor()
     print('before try block')
+    
     try:
         print('in try block to insert queries')
-        insert_trip_query = """
-            INSERT INTO trip (
-            destination, start_date, end_date, travelers, budget)
-            VALUES (?, ?, ?, ?, ?)"""
-        conn.execute(insert_trip_query, (destination, start_date, end_date, travelers, budget))
-        conn.commit()
-        trip_id = cursor.lastrowid
+        # Create and insert Trip
+        new_trip = Trip(
+            destination=destination,
+            start_date=datetime.strptime(start_date, '%Y-%m-%d').date(),
+            end_date=datetime.strptime(end_date, '%Y-%m-%d').date(),
+            travelers=int(travelers),
+            budget=int(budget),
+            user_id=current_user.id  
+        )
+        db.session.add(new_trip)
+        db.session.flush()  
 
-        insert_flight_query = """
-            INSERT INTO flight (airline, flight_number, departure_date, departure_time, trip_id)
-            VALUES (?, ?, ?, ?, ?)"""
-        conn.execute(insert_flight_query, (airline, flight_number, depart_date, depart_time, trip_id))
-        conn.commit()
+        # Create and insert Flight
+        new_flight = Flight(
+            airline=airline,
+            flight_number=int(flight_number),
+            departure_date=datetime.strptime(depart_date, '%Y-%m-%d').date(),
+            departure_time=datetime.strptime(depart_time, '%H:%M').time(),
+            trip_id=new_trip.id
+        )
+        db.session.add(new_flight)
+        db.session.flush()  
 
-        insert_hotel_query = """
-            INSERT INTO hotel (hotel_name, location, trip_id)
-            VALUES (?, ?, ?)"""
-        conn.execute(insert_hotel_query, (hotel_name, hotel_location, trip_id))
-        conn.commit()
+        # Create and insert Hotel
+        new_hotel = Hotel(
+            hotel_name=hotel_name,
+            location=hotel_location,
+            trip_id=new_trip.id
+        )
+        db.session.add(new_hotel)
 
-        insert_activities_query = """
-            INSERT INTO activity (name, location, date, description, trip_id)
-            VALUES (?, ?, ?, ?, ?)"""
+        # Create and insert Activities
+        print("Activities:", activity_names, activity_locations, activity_dates, activity_descriptions)
+
         for name, location, date, description in zip(activity_names, activity_locations, activity_dates, activity_descriptions):
-            conn.execute(insert_activities_query, (name, location, date, description, trip_id))
-            conn.commit()
+            new_activity = Activity(
+                activity_name=name,
+                location=location,
+                date=datetime.strptime(date, '%Y-%m-%d').date(),
+                description=description,
+                trip_id=new_trip.id
+            )
+            db.session.add(new_activity)
+
+        new_booking = Booking(
+            user_id=current_user.id,
+            trip_id=new_trip.id,
+            flight_id=new_flight.id,
+            hotel_id=new_hotel.id
+        )
+        db.session.add(new_booking)
+    
+        db.session.commit()
 
     except Exception as ex:
         print('in except')
-        conn.rollback()
+        db.session.rollback()
         print('Error saving plan: ', ex)
 
     finally:
         print('in finally')
-        conn.close()
+
         
     print('about to flash message and return home')
     flash('Plan created successfully!', category='success')
