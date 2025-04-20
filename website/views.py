@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from .models import User, Trip, Flight, Activity, Hotel, Itinerary, Booking
 import sqlite3
 from datetime import datetime
-from flask import flash
+from flask import flash, url_for
 from . import db
 
 # views.py are end points for the url to navigate around the webpage
@@ -80,6 +80,13 @@ def save_plan():
     activity_locations = request.form.getlist('activity_location[]') 
     activity_dates = request.form.getlist('activity_date[]') 
     activity_descriptions = request.form.getlist('activity_description[]') 
+
+    values = [destination, start_date, end_date, travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location]
+
+    if any(value.strip() == '' for value in values):
+        flash('Please fill in all required fields.')
+        return redirect(request.referrer or url_for('/save-plan'))
+
 
     # insert to db
     conn = get_db_connection()
