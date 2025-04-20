@@ -118,6 +118,7 @@ def save_plan():
             trip_id=new_trip.id
         )
         db.session.add(new_hotel)
+        db.session.flush()
 
         # Create and insert Activities
         print("Activities:", activity_names, activity_locations, activity_dates, activity_descriptions)
