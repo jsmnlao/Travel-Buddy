@@ -306,12 +306,10 @@
           <a>
             <button type="submit" class="btn btn-success mr-2">Save Plan</button>
           </a>
-          <a href="/home">
-            <button class="btn btn-danger">Cancel</button>
-          </a>
+          <a href="/home" class="btn btn-danger">Cancel</a>
         </div>
       </form>
-      <script>
+      <!-- <script>
         document.getElementById('form-container').addEventListener('submit', function (e) {
           const requiredFields = [
             'destination', 'startDate', 'endDate', 'travelers', 'budget',
@@ -341,7 +339,7 @@
           }
         });
       </script>
-      
+       -->
 
       <script>
         document.getElementById('form-container').addEventListener('submit', function (e){
@@ -359,10 +357,9 @@
           const hotel_name = document.getElementById('hotel_name').value.trim()
           const hotel_location = document.getElementById('hotel_location').value.trim()
 
-          // const actvity = document.getElementById('hotel_name').value.trim()
-          // const hotel_location = document.getElementById('hotel_location').value.trim()
-          // const hotel_name = document.getElementById('hotel_name').value.trim()
-          // const hotel_location = document.getElementById('hotel_location').value.trim()
+          const actvity_names = document.getElementById('hotel_name').value.trim()
+          const actvity_locations = document.getElementById('hotel_location').value.trim()
+          const actvity_dates = document.getElementById('hotel_name').value.trim()
           
           const inputs = [destination, start_date, end_date, num_travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location]
           if(input.some(input => input === '')){
