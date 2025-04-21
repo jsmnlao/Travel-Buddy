@@ -108,6 +108,12 @@ def save_plan():
     if any(value.strip() == '' for value in values):
         flash('Please fill in all required fields.')
         return redirect(request.referrer or url_for('/save-plan'))
+    
+    activity_lists = [activity_names, activity_locations, activity_dates]
+    for activity_list in activity_lists:
+        if any(item.strip() == '' for item in activity_list):
+            flash('Please fill out all all required.')
+            return redirect(request.referrer or url_for('/save-plan'))
 
 
     # insert to db
