@@ -78,7 +78,7 @@
 
     <section>
       <form id="form-container" method="POST" action="{{ url_for('views.save_plan') }}" class="container my-5">
-        <!-- Trip Details Form (NEEDS TO CONNECT TO DATABASE) -->
+        <!-- Trip Details Form -->
         <div class="card mb-4 p-4">
           <h4 class="mb-3">Trip Details</h4>
           <div class="form-row">
@@ -334,13 +334,14 @@
           });
       
           if (!isValid) {
-            e.preventDefault(); // prevent form submission if there are empty fields
-            // alert('Please fill out all required fields.');
+            e.preventDefault();
+            alert('Please fill out all required fields.');
           }
         });
-      </script>
-       -->
+      </script> -->
+      
 
+      <!-- Ensure all fields are filled -->
       <script>
         document.getElementById('form-container').addEventListener('submit', function (e){
           const destination = document.getElementById('destination').value.trim()
@@ -362,10 +363,33 @@
           const actvity_dates = document.getElementById('hotel_name').value.trim()
           
           const inputs = [destination, start_date, end_date, num_travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location]
-          if(input.some(input => input === '')){
-            e.preventDefault(); 
-            alert('Please fill in all required fields')
+          let isValid = true;
+
+          requiredFields.forEach(function (id) {
+            const input = document.getElementById(id);
+            const label = document.querySelector(`label[for="${id}"]`);
+            print('label: ', input, 'input: ', input)
+            
+            if (input && label) {
+              if (!input.value.trim()) {
+                label.classList.add('bold-label');
+                input.classList.add('input-warning');
+                isValid = false;
+              } else {
+                label.classList.remove('bold-label');
+                input.classList.remove('input-warning');
+              }
+            }
+          });
+
+          if (!isValid) {
+            e.preventDefault();
+            alert('Please fill in all required fields');
           }
+          // if(input.some(input => input === '')){
+          //   e.preventDefault(); 
+          //   alert('Please fill in all required fields')
+          // }
         });     
       </script>
     </section>

@@ -32,15 +32,18 @@ def view_plan(trip_id):
     return render_template("plan.html", user=current_user, trip=trip)
 
 
-@views.route('/edit-plan/<int:trip_id>', methods=['POST'])
+@views.route('/edit-plan/<int:trip_id>', methods=['GET'])
 @login_required
 def edit_plan(trip_id):
     trip = Trip.query.get_or_404(trip_id)
+    flight = Flight.query.filter_by(trip_id=trip_id).first() 
+    hotel = Hotel.query.filter_by(trip_id=trip_id).first() 
+    activities = Activity.query.filter_by(trip_id=trip_id).all()
 
     if trip.user_id != current_user.id:
         abort(403)
 
-    return render_template("plan.html", user=current_user, trip=trip)
+    return render_template("edit-plan.html", user=current_user, trip=trip, flight=flight, hotel=hotel, activities=activities)
 
 
 @views.route('/delete-plan/<int:trip_id>', methods=['POST'])
