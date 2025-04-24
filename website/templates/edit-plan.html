@@ -115,11 +115,11 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="depart_date">Departure Date</label>
-              <input type="date" class="form-control" id="depart_date" value="{{flight.depart_date}}" />
+              <input type="date" class="form-control" id="depart_date" value="{{flight.departure_date}}" />
             </div>
             <div class="form-group col-md-6">
               <label for="depart_time">Departure Time</label>
-              <input type="time" class="form-control" id="depart_time" value="{{flight.depart_time}}" />
+              <input type="time" class="form-control" id="depart_time" value="{{flight.departure_time}}" />
             </div>
           </div>
         </div>
@@ -201,18 +201,6 @@
             document.getElementById('activity-container').appendChild(newActivity);
           });
         </script>
-
-        <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
-        <div class="card p-4 mb-5">
-          <h4 class="mb-3 font-weight-bold">Trip Overview</h4>
-          <ul class="list-group">
-            <li class="list-group-item">📍 Destination: <strong id="preview-destination">test</strong></li>
-            <li class="list-group-item">📅 Dates: <strong id="preview-dates">test</strong></li>
-            <li class="list-group-item">✈️ Flight: <strong id="preview-flight">test</strong></li>
-            <li class="list-group-item">🏨 Hotel: <strong id="preview-hotel">test</strong></li>
-            <li class="list-group-item">🎉 Activities: <strong id="preview-activities">test</strong></li>
-          </ul>
-        </div>
 
         <!-- Save -->
         <div class="text-center mb-4">
