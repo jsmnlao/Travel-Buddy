@@ -192,3 +192,53 @@ def save_plan():
     print('about to flash message and return home')
     flash('Plan created successfully!', category='success')
     return redirect('/home')
+
+
+@views.route('/update-plan', methods=['POST'])
+def update_plan():    
+    try:
+        trip_id = request.form['t']
+        trip = Trip.query.get_or_404('trip_id')   
+        if trip.user_id != current_user.id:
+            abort(403)
+        
+        trip.destination = request.form['destination']
+        trip.start_date = request.form['startDate']
+        trip.end_date = request.form['endDate']
+        trip.travelers = request.form['travelers']
+        trip.budget = request.form['budget']
+        
+        flight = Flight.query.filter_by(trip_id=trip_id).first() 
+        if flight:
+            flight.airline = request.form['airline']
+            flight.flight_number = request.form['flight_number']
+            flight.departure_date = request.form['depart_date']
+            flight.departure_time = request.form['depart_time']
+        
+        
+        hotel = Hotel.query.filter_by(trip_id=trip_id).first() 
+        if hotel:
+            hotel.hotel_name = request.form['hotel_name']
+            hotel.location = request.form['hotel_location']
+            
+        activities = Activity.query.filter_by(trip_id=trip_id).all()
+        activity_names = request.form.getlist('activity_name[]')
+        activity_locations = request.form.getlist('activity_location[]') 
+        activity_dates = request.form.getlist('activity_date[]') 
+        activity_descriptions = request.form.getlist('activity_description[]') 
+
+        if activities:
+            for i in range(len(activities)):
+                activities[i].activity_name = activity_names[i]
+                activities[i].location = activity_locations[i]
+                activities[i].date = activity_dates[i]
+                activities[i].description = activity_descriptions[i]
+        
+            db.session.commit()
+    
+    except Exception as ex:
+        db.session.rollback()
+        print('Error saving plan: ', ex) 
+    
+    flash('Plan updated successfully!', category='success')
+    return redirect(url_for('views.edit_plan', trip_id=trip_id))

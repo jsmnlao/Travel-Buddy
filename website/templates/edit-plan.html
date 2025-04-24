@@ -64,36 +64,35 @@
     </section>
 
     <section>
-      <div class="container my-5">
+      <!-- <div class="container my-5"> -->
+      <form class="container my-5" id="form-container" method="POST" action="{{ url_for('views.save_plan') }}" class="container my-5">
         <!-- Trip Details Form (NEEDS TO CONNECT TO DATABASE) -->
         <div class="card mb-4 p-4">
           <h4 class="mb-3">Trip Details</h4>
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="destination">Destination</label>
-                <input type="text" class="form-control" id="destination" value="{{trip.destination}}" />
-              </div>
-              <div class="form-group col-md-3">
-                <label for="startDate">Start Date</label>
-                <input type="date" class="form-control" id="startDate" value="{{trip.start_date}}" />
-              </div>
-              <div class="form-group col-md-3">
-                <label for="endDate">End Date</label>
-                <input type="date" class="form-control" id="endDate" value="{{trip.end_date}}" />
-              </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="destination">Destination</label>
+              <input type="text" class="form-control" id="destination" value="{{trip.destination}}" />
             </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="travelers">Number of Travelers</label>
-                <input type="number" class="form-control" id="travelers" value="{{trip.travelers}}" min="1" />
-              </div>
-              <div class="form-group col-md-4">
-                <label for="budget">Budget ($)</label>
-                <input type="number" class="form-control" id="budget" value="{{trip.budget}}" />
-              </div>
+            <div class="form-group col-md-3">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="form-control" id="startDate" value="{{trip.start_date}}" />
             </div>
-          </form>
+            <div class="form-group col-md-3">
+              <label for="endDate">End Date</label>
+              <input type="date" class="form-control" id="endDate" value="{{trip.end_date}}" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="travelers">Number of Travelers</label>
+              <input type="number" class="form-control" id="travelers" value="{{trip.travelers}}" min="1" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="budget">Budget ($)</label>
+              <input type="number" class="form-control" id="budget" value="{{trip.budget}}" />
+            </div>
+          </div>
         </div>
 
         <!-- Flight Information -->
@@ -153,29 +152,26 @@
           </div>
 
           {% for activity in activities %}
-          <div id="activity-container">
-            <div class="activity-section">
-              <div class="form-group">
-                <label for="activity_name">Activity Name</label>
-                <input type="text" class="form-control" id="activity_name" value="{{activity.activity_name}}" />
-              </div>
-              <div class="form-group">
-                <label for="activity_location">Location</label>
-                <input type="text" class="form-control" id="activity_location" value="{{activity.location}}" />
-              </div>
-              <div class="form-group">
-                <label for="activity_date">Activity Date</label>
-                <input type="date" class="form-control" id="activity_date" value="{{activity.date}}" />
-              </div>
-              <div class="form-group">
-                <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" id="activity_description" rows="3" value="{{activity.description}}"></textarea>
-              </div>
+          <div class="card mb-4 p-4">
+            <div class="form-group">
+              <label for="activity_name">Activity Name</label>
+              <input type="text" class="form-control" id="activity_name" value="{{activity.activity_name}}" />
+            </div>
+            <div class="form-group">
+              <label for="activity_location">Location</label>
+              <input type="text" class="form-control" id="activity_location" value="{{activity.location}}" />
+            </div>
+            <div class="form-group">
+              <label for="activity_date">Activity Date</label>
+              <input type="date" class="form-control" id="activity_date" value="{{activity.date}}" />
+            </div>
+            <div class="form-group">
+              <label for="activity_description">Add Description (optional)</label>
+              <textarea class="form-control" id="activity_description" rows="3">{{activity.description}}</textarea>
             </div>
           </div>
-          <button type="button" class="btn btn-primary" id="addActivityBtn">Add Another Activity</button>
-        </div>
         {% endfor %}
+
 
         <script>
           document.getElementById('addActivityBtn').addEventListener('click', function () {
@@ -204,14 +200,12 @@
 
         <!-- Save -->
         <div class="text-center mb-4">
-          <a href="/home">
-            <button class="btn btn-success mr-2">Save Plan</button>
+          <a>
+            <button type="submit" class="btn btn-success mr-2">Save Plan</button>
           </a>
-          <a href="/home">
-            <button class="btn btn-danger">Cancel</button>
-          </a>
+          <a href="/home" class="btn btn-danger">Cancel</a>
         </div>
-      </div>
+      </form>
     </section>
 
     <!-- Footer -->
