@@ -197,24 +197,29 @@ def save_plan():
 @views.route('/update-plan', methods=['POST'])
 def update_plan():    
     try:
-        trip_id = request.form['t']
-        trip = Trip.query.get_or_404('trip_id')   
+        trip_id = request.form.get('trip_id')
+        if not trip_id:
+            print("trip_id not received in form!")
+            raise Exception("Missing trip_id in form data")
+        trip = Trip.query.get_or_404(trip_id)   
+        
         if trip.user_id != current_user.id:
             abort(403)
         
         trip.destination = request.form['destination']
-        trip.start_date = request.form['startDate']
-        trip.end_date = request.form['endDate']
+        trip.start_date = datetime.strptime(request.form['startDate'], '%Y-%m-%d').date()
+        trip.end_date = datetime.strptime(request.form['endDate'], '%Y-%m-%d').date()
         trip.travelers = request.form['travelers']
         trip.budget = request.form['budget']
         
         flight = Flight.query.filter_by(trip_id=trip_id).first() 
+      
         if flight:
             flight.airline = request.form['airline']
             flight.flight_number = request.form['flight_number']
-            flight.departure_date = request.form['depart_date']
-            flight.departure_time = request.form['depart_time']
-        
+            flight.departure_date = datetime.strptime(request.form['depart_date'], '%Y-%m-%d').date()
+            flight.departure_time = datetime.strptime(request.form['depart_time'], '%H:%M').time()
+
         
         hotel = Hotel.query.filter_by(trip_id=trip_id).first() 
         if hotel:
@@ -224,21 +229,35 @@ def update_plan():
         activities = Activity.query.filter_by(trip_id=trip_id).all()
         activity_names = request.form.getlist('activity_name[]')
         activity_locations = request.form.getlist('activity_location[]') 
-        activity_dates = request.form.getlist('activity_date[]') 
+        activity_dates = activity_dates = [
+            datetime.strptime(d, '%Y-%m-%d').date()
+            for d in request.form.getlist('activity_date[]')]
         activity_descriptions = request.form.getlist('activity_description[]') 
 
+        # update existing actvities
         if activities:
-            for i in range(len(activities)):
+            for i in range(min(len(activities), len(activity_names))):
                 activities[i].activity_name = activity_names[i]
                 activities[i].location = activity_locations[i]
                 activities[i].date = activity_dates[i]
                 activities[i].description = activity_descriptions[i]
         
-            db.session.commit()
+        # add any new activities
+        for i in range(len(activities), len(activity_names)):
+            new_activity = Activity(
+                trip_id=trip_id,
+                activity_name=activity_names[i],
+                location=activity_locations[i],
+                date=activity_dates[i],
+                description=activity_descriptions[i]
+            )
+            db.session.add(new_activity)
+        
+        db.session.commit()
     
     except Exception as ex:
         db.session.rollback()
         print('Error saving plan: ', ex) 
     
     flash('Plan updated successfully!', category='success')
-    return redirect(url_for('views.edit_plan', trip_id=trip_id))
+    return redirect('/home')
