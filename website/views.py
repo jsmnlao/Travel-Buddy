@@ -1,6 +1,6 @@
 from flask import current_app, Blueprint, render_template, abort, request, redirect
 from flask_login import login_required, current_user
-from .models import User, Trip, Flight, Activity, Hotel, Itinerary, Booking
+from .models import User, Trip, Flight, Activity, Hotel, Booking
 import sqlite3
 from datetime import datetime
 from flask import flash, url_for
@@ -61,7 +61,6 @@ def delete_plan(trip_id):
         return redirect(url_for('views.home'))
         # return render_template("home.html", user=current_user, trip=trip)
     except Exception as ex:
-        print('Exception occured when deleting: ', ex)
         flash('An occured while performing action,', 'danger')
         return redirect(url_for('views.home'))
         # return render_template("home.html", user=current_user, trip=trip)
