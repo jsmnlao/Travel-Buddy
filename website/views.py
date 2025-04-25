@@ -25,11 +25,14 @@ def home():
 @login_required
 def view_plan(trip_id):
     trip = Trip.query.get_or_404(trip_id)
+    flight = Flight.query.filter_by(trip_id=trip_id).first() 
+    hotel = Hotel.query.filter_by(trip_id=trip_id).first() 
+    activities = Activity.query.filter_by(trip_id=trip_id).all()
 
     if trip.user_id != current_user.id:
         abort(403)
 
-    return render_template("plan.html", user=current_user, trip=trip)
+    return render_template("plan.html", user=current_user, trip=trip, flight=flight, hotel=hotel, activities=activities)
 
 
 @views.route('/edit-plan/<int:trip_id>', methods=['GET'])
@@ -121,10 +124,8 @@ def save_plan():
     # insert to db
     conn = get_db_connection()
     cursor = conn.cursor()
-    print('before try block')
     
     try:
-        print('in try block to insert queries')
         # Create and insert Trip
         new_trip = Trip(
             destination=destination,
@@ -158,7 +159,6 @@ def save_plan():
         db.session.flush()
 
         # Create and insert Activities
-        print("Activities:", activity_names, activity_locations, activity_dates, activity_descriptions)
 
         for name, location, date, description in zip(activity_names, activity_locations, activity_dates, activity_descriptions):
             new_activity = Activity(
@@ -181,12 +181,8 @@ def save_plan():
         db.session.commit()
 
     except Exception as ex:
-        print('in except')
         db.session.rollback()
         print('Error saving plan: ', ex)
-
-    finally:
-        print('in finally')
         
     print('about to flash message and return home')
     flash('Plan created successfully!', category='success')
@@ -217,7 +213,11 @@ def update_plan():
             flight.airline = request.form['airline']
             flight.flight_number = request.form['flight_number']
             flight.departure_date = datetime.strptime(request.form['depart_date'], '%Y-%m-%d').date()
-            flight.departure_time = datetime.strptime(request.form['depart_time'], '%H:%M').time()
+            # flight.departure_time = datetime.strptime(request.form['depart_time'], '%H:%M').time()
+            try:
+                flight.departure_time = datetime.strptime(request.form['depart_time'], '%H:%M:%S').time()
+            except ValueError:
+                flight.departure_time = datetime.strptime(request.form['depart_time'], '%H:%M').time()
 
         
         hotel = Hotel.query.filter_by(trip_id=trip_id).first() 
