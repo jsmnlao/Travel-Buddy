@@ -18,17 +18,10 @@ Travel Buddy aims to ease the stress of planning a trip. Everyone loves to trave
 
 ## 👩🏽‍💻 Setup & Execution
 
-Dependencies:
-
-- `pip install flask`
-- `pip install flask-login`
-- `pip install flask-sqlalchemy`
-- `pip install openai`
-
 To execute this project on your machine:
 
-1. Clone the reposity with `git clone https://github.com/jsmnlao/Travel-Buddy.git`
+1. Clone the reposity with `git clone` and the web URL found in the `<> Code` drop down above.
 2. Download and install Python on your device. You can follow the instructions [here](https://www.python.org/downloads/).
 3. Navigate to the project through your CLI
-4. Start the project with `python3 main.py`
+4. Start the project with `flask run` (If you get the error message `zsh: command not found: flask`, you need to install flask with `pip install flask`)
 5. Following the instructions on your CLI, open the website through the port given
