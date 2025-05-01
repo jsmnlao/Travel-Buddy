@@ -18,10 +18,26 @@ Travel Buddy aims to ease the stress of planning a trip. Everyone loves to trave
 
 ## 👩🏽‍💻 Setup & Execution
 
-To execute this project on your machine:
+### To execute this project on your machine:
 
 1. Clone the reposity with `git clone` and the web URL found in the `<> Code` drop down above.
 2. Download and install Python on your device. You can follow the instructions [here](https://www.python.org/downloads/).
 3. Navigate to the project through your CLI
-4. Start the project with `flask run` (If you get the error message `zsh: command not found: flask`, you need to install flask with `pip install flask`)
-5. Following the instructions on your CLI, open the website through the port given
+4. Open the project in an IDE or create a `.env` file inside the project directory.
+
+In this file, you will need to get the API Client ID and Secret Keys for each of the dependencies listed below. Your `.env file` should look something like this:
+
+```
+AMADEUS_CLIENT_ID=<here you put your client id>
+AMADEUS_CLIENT_SECRET=<here you put your secret>
+```
+
+5. Install all necessary dependencies with `pip install -r requitements.txt`
+6. Start the project with `flask run`
+7. Following the instructions on your CLI, open the website through the port given
+
+### Dependencies
+
+1. Amadeus API
+
+- Instructions for obtaining the API Key and Secret can be found [here](https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/quick-start/)
