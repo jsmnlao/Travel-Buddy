@@ -1,10 +1,12 @@
-from flask import current_app, Blueprint, render_template, abort, request, redirect
+from flask import current_app, Blueprint, render_template, abort, request, redirect, jsonify
 from flask_login import login_required, current_user
 from .models import User, Trip, Flight, Activity, Hotel, Booking
 import sqlite3
 from datetime import datetime
 from flask import flash, url_for
 from . import db
+from . import amadeus
+from amadeus import ResponseError
 
 # views.py are end points for the url to navigate around the webpage
 
@@ -260,3 +262,22 @@ def update_plan():
     
     flash('Plan updated successfully!', category='success')
     return redirect('/home')
+
+
+# Testing information from amadeus
+@views.route('/flights', methods=['GET'])
+def search_flights():
+    origin = request.args.get('origin', 'SFO')
+    destination = request.args.get('destination', 'JFK')
+    departure_date = request.args.get('date', '2025-06-01')
+
+    try:
+        response = amadeus.shopping.flight_offers_search.get(
+            originLocationCode=origin,
+            destinationLocationCode=destination,
+            departureDate=departure_date,
+            adults=1
+        )
+        return jsonify(response.data)
+    except ResponseError as error:
+        return jsonify({'error': str(error)}), 500
