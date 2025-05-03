@@ -64,16 +64,17 @@ def delete_plan(trip_id):
         db.session.commit()
         flash('Your trip has deleted successfully!', 'success')
         return redirect(url_for('views.home'))
-        # return render_template("home.html", user=current_user, trip=trip)
     except Exception as ex:
         flash('An occured while performing action,', 'danger')
-        return redirect(url_for('views.home'))
-        # return render_template("home.html", user=current_user, trip=trip)
-        
+        return redirect(url_for('views.home'))        
 
 @views.route('/explore')
 def explore():
-    return render_template("explore.html", user=current_user)
+    public_trips = Trip.query.filter_by(public=True).all()      # retrieve Public trips
+    print("Public Trips:")
+    for trip in public_trips:
+        print(f"Trip ID: {trip.id}, Destination: {trip.destination}, User ID: {trip.user_id}")
+    return render_template("explore.html", user=current_user, trips=public_trips)
 
 @views.route('/signup')
 def signup():
