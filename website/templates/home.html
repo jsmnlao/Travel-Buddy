@@ -81,20 +81,26 @@
   </head>
   <body class="min-vh-100 d-flex flex-column">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-      <a class="navbar-brand">
-        <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top logo-nav" />
+      <a class="navbar-brand ms-3" href="/home">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" class="d-inline-block align-top logo-nav" />
       </a>
       <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link ms-3" id="home" href="/home">Home</a>
-          <a class="nav-item nav-link ms-3" id="explore" href="/explore">Explore</a>
-        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link ms-3" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ms-3" href="/explore">Explore</a>
+          </li>
+        </ul>
+
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="btn btn-outline-primary ms-3" id="logout" href="/" role="button">Logout</a>
+            <a class="btn btn-outline-primary ms-3 me-3" id="logout" href="/" role="button">Logout</a>
           </li>
         </ul>
       </div>
