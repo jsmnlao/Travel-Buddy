@@ -86,6 +86,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       {% endfor %} {% endif %} {% endwith %}
+    </section>
 
     <section>
       <form id="form-container" method="POST" action="{{ url_for('views.save_plan') }}" class="container my-5">
@@ -173,12 +174,12 @@
               <i class="bi bi-stars"></i>
             </button>
           </div>
-          
+
           <div id="activity-container">
             <div class="activity-section">
               <div class="form-group">
                 <label for="activity_name[]">Activity Name</label>
-                <input type="text" class="form-control" name="activity_name[]"  placeholder="e.g. Try local foods! " value="Eat dim sum" />
+                <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods! " value="Eat dim sum" />
               </div>
               <div class="form-group">
                 <label for="activity_location[]">Location</label>
@@ -207,60 +208,57 @@
           <p>🎉 <strong>Activities: </strong></p>
           <ul id="preview-activities"></ul>
         </div>
-        
+
         <!-- Make public on explore-->
-        <label class="public-checkbox"> 
-          <input class="big-checkbox" type="checkbox" name="public" id="public"/> Make this trip public (show on Explore)? 
-        </label>
+        <label class="public-checkbox"> <input class="big-checkbox" type="checkbox" name="public" id="public" /> Make this trip public (show on Explore)? </label>
 
         <script>
           function updatePreview() {
             document.getElementById('preview-destination').textContent = document.getElementById('destination').value;
-        
+
             const start = document.getElementById('startDate').value;
             const end = document.getElementById('endDate').value;
             document.getElementById('preview-dates').textContent = start && end ? `${start} to ${end}` : '';
-        
+
             const airline = document.getElementById('airline').value;
             const flightNum = document.getElementById('flight_number').value;
             document.getElementById('preview-flight').textContent = airline && flightNum ? `${airline} ${flightNum}` : '';
-        
+
             const hotel = document.getElementById('hotel_name').value;
             const location = document.getElementById('hotel_location').value;
             document.getElementById('preview-hotel').textContent = hotel && location ? `${hotel}, ${location}` : '';
-        
+
             const activityContainer = document.getElementById('activity-container');
             const previewActivities = document.getElementById('preview-activities');
-            previewActivities.innerHTML = ''; 
-        
+            previewActivities.innerHTML = '';
+
             const activities = activityContainer.querySelectorAll('.activity-section');
-            activities.forEach(activity => {
+            activities.forEach((activity) => {
               const name = activity.querySelector('input[name="activity_name[]"]').value;
               const loc = activity.querySelector('input[name="activity_location[]"]').value;
               const date = activity.querySelector('input[name="activity_date[]"]').value;
               const desc = activity.querySelector('textarea[name="activity_description[]"]').value;
-        
+
               const li = document.createElement('li');
-              if (desc.trim()){
+              if (desc.trim()) {
                 li.textContent = `${name} at ${loc} on ${date} — ${desc}`;
-              }
-              else{
+              } else {
                 li.textContent = `${name} at ${loc} on ${date}`;
-              }             
+              }
               previewActivities.appendChild(li);
             });
           }
-        
+
           const formElements = document.querySelectorAll('input, textarea');
-          formElements.forEach(el => {
+          formElements.forEach((el) => {
             el.addEventListener('input', updatePreview);
             el.addEventListener('change', updatePreview);
           });
-        
+
           document.getElementById('addActivityBtn').addEventListener('click', function () {
             const newActivity = document.createElement('div');
             newActivity.classList.add('activity-section');
-        
+
             newActivity.innerHTML = `
               <hr>
               <div class="form-group">
@@ -281,17 +279,16 @@
               </div>
             `;
             document.getElementById('activity-container').appendChild(newActivity);
-        
-            newActivity.querySelectorAll('input, textarea').forEach(input => {
+
+            newActivity.querySelectorAll('input, textarea').forEach((input) => {
               input.addEventListener('input', updatePreview);
               input.addEventListener('change', updatePreview);
             });
-            updatePreview(); 
+            updatePreview();
           });
-        
+
           window.addEventListener('DOMContentLoaded', updatePreview);
         </script>
-
 
         <!-- Save -->
         <div class="text-center mb-4">
@@ -301,67 +298,38 @@
           <a href="/home" class="btn btn-danger">Cancel</a>
         </div>
       </form>
-      <!-- <script>
-        document.getElementById('form-container').addEventListener('submit', function (e) {
-          const requiredFields = [
-            'destination', 'startDate', 'endDate', 'travelers', 'budget',
-            'airline', 'flight_number', 'depart_date', 'depart_time',
-            'hotel_name', 'hotel_location', 'activity_name[]', 'activity_location[]', 'activity_date[]'
-          ];
-      
-          let isValid = true;
-      
-          requiredFields.forEach(function (id) {
-            const input = document.getElementById(id);
-            const label = document.querySelector(`label[for="${id}"]`);
-      
-            if (input && label) {
-              if (!input.value.trim()) {
-                label.classList.add('bold-label');
-                isValid = false;
-              } else {
-                label.classList.remove('bold-label');
-              }
-            }
-          });
-      
-          if (!isValid) {
-            e.preventDefault();
-            alert('Please fill out all required fields.');
-          }
-        });
-      </script> -->
-      
 
       <!-- Ensure all fields are filled -->
       <script>
-        document.getElementById('form-container').addEventListener('submit', function (e){
-          const destination = document.getElementById('destination').value.trim()
-          const start_date = document.getElementById('startDate').value.trim()
-          const end_date = document.getElementById('endDate').value.trim()
-          const num_travelers = document.getElementById('travelers').value.trim()
-          const budget = document.getElementById('budget').value.trim()
+        document.getElementById('form-container').addEventListener('submit', function (e) {
+          const destination = document.getElementById('destination').value.trim();
+          const start_date = document.getElementById('startDate').value.trim();
+          const end_date = document.getElementById('endDate').value.trim();
+          const num_travelers = document.getElementById('travelers').value.trim();
+          const budget = document.getElementById('budget').value.trim();
 
-          const airline = document.getElementById('airline').value.trim()
-          const flight_number = document.getElementById('flight_number').value.trim()
-          const depart_date = document.getElementById('depart_date').value.trim()
-          const depart_time = document.getElementById('depart_time').value.trim()
+          const airline = document.getElementById('airline').value.trim();
+          const flight_number = document.getElementById('flight_number').value.trim();
+          const depart_date = document.getElementById('depart_date').value.trim();
+          const depart_time = document.getElementById('depart_time').value.trim();
 
-          const hotel_name = document.getElementById('hotel_name').value.trim()
-          const hotel_location = document.getElementById('hotel_location').value.trim()
+          const hotel_name = document.getElementById('hotel_name').value.trim();
+          const hotel_location = document.getElementById('hotel_location').value.trim();
 
-          const actvity_names = document.getElementById('hotel_name').value.trim()
-          const actvity_locations = document.getElementById('hotel_location').value.trim()
-          const actvity_dates = document.getElementById('hotel_name').value.trim()
-          
-          const inputs = [destination, start_date, end_date, num_travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location]
+          const actvity_names = document.getElementById('activity_names').value.trim();
+          const actvity_locations = document.getElementById('activity_locations').value.trim();
+          const actvity_dates = document.getElementById('activity_dates').value.trim();
+
+          // const inputs = [destination, start_date, end_date, num_travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location];
+          const requiredFields = ['destination', 'startDate', 'endDate', 'travelers', 'budget', 'airline', 'flight_number', 'depart_date', 'depart_time', 'hotel_name', 'hotel_location'];
+
           let isValid = true;
 
           requiredFields.forEach(function (id) {
             const input = document.getElementById(id);
             const label = document.querySelector(`label[for="${id}"]`);
-            print('label: ', input, 'input: ', input)
-            
+            print('label: ', input, 'input: ', input);
+
             if (input && label) {
               if (!input.value.trim()) {
                 label.classList.add('bold-label');
@@ -378,11 +346,7 @@
             e.preventDefault();
             alert('Please fill in all required fields');
           }
-          // if(input.some(input => input === '')){
-          //   e.preventDefault(); 
-          //   alert('Please fill in all required fields')
-          // }
-        });     
+        });
       </script>
     </section>
 

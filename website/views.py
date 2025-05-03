@@ -97,8 +97,7 @@ def save_plan():
     end_date = request.form['endDate']
     travelers = request.form['travelers']
     budget = request.form['budget']
-    public = True if request.form['public'] else False
-    print('public from create: ', public)
+    public = True if request.form.get('public') else False
 
     airline = request.form['airline']
     flight_number = request.form['flight_number']
@@ -112,19 +111,18 @@ def save_plan():
     activity_locations = request.form.getlist('activity_location[]') 
     activity_dates = request.form.getlist('activity_date[]') 
     activity_descriptions = request.form.getlist('activity_description[]') 
-
+    
     values = [destination, start_date, end_date, travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location]
 
     if any(value.strip() == '' for value in values):
         flash('Please fill in all required fields.')
-        return redirect(request.referrer or url_for('/save-plan'))
+        return redirect(request.referrer or url_for('create_plan'))
     
     activity_lists = [activity_names, activity_locations, activity_dates]
     for activity_list in activity_lists:
         if any(item.strip() == '' for item in activity_list):
             flash('Please fill out all all required.')
-            return redirect(request.referrer or url_for('/save-plan'))
-
+            return redirect(request.referrer or url_for('create_plan'))
 
     # insert to db
     conn = get_db_connection()
@@ -214,10 +212,7 @@ def update_plan():
         trip.travelers = request.form['travelers']
         trip.budget = request.form['budget']
         trip.public = True if request.form.get('public') else False
-      
-        print('destination: ', trip.destination)
-        print('public: ', trip.public)
-        
+  
         flight = Flight.query.filter_by(trip_id=trip_id).first() 
       
         if flight:
