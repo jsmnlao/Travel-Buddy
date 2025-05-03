@@ -36,6 +36,18 @@ def view_plan(trip_id):
 
     return render_template("plan.html", user=current_user, trip=trip, flight=flight, hotel=hotel, activities=activities)
 
+@views.route('/explore-plan/<int:trip_id>')
+@login_required
+def explore_plan(trip_id):
+    trip = Trip.query.get_or_404(trip_id)
+    flight = Flight.query.filter_by(trip_id=trip_id).first() 
+    hotel = Hotel.query.filter_by(trip_id=trip_id).first() 
+    activities = Activity.query.filter_by(trip_id=trip_id).all()
+
+    if trip.user_id != current_user.id:
+        abort(403)
+
+    return render_template("explore-plan.html", user=current_user, trip=trip, flight=flight, hotel=hotel, activities=activities)
 
 @views.route('/edit-plan/<int:trip_id>', methods=['GET'])
 @login_required
@@ -71,9 +83,6 @@ def delete_plan(trip_id):
 @views.route('/explore')
 def explore():
     public_trips = Trip.query.filter_by(public=True).all()      # retrieve Public trips
-    print("Public Trips:")
-    for trip in public_trips:
-        print(f"Trip ID: {trip.id}, Destination: {trip.destination}, User ID: {trip.user_id}")
     return render_template("explore.html", user=current_user, trips=public_trips)
 
 @views.route('/signup')
