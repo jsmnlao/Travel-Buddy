@@ -35,6 +35,17 @@
         border-radius: 25px;
         border: 1px solid #dee2e6;
       }
+      .public-checkbox {
+        display: block;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      .big-checkbox {
+        transform: scale(1.2);
+        margin-right: 8px;
+      }
     </style>
   </head>
   <body class="min-vh-100 d-flex flex-column">
@@ -199,6 +210,12 @@
             document.getElementById('activity-container').appendChild(newActivity);
           });
         </script>
+
+        <!-- Make public on explore-->
+        <label class="public-checkbox">
+          <input class="big-checkbox" type="checkbox" name="public" {% if trip.public %} checked {% endif %} />
+          Make this trip public (show on Explore)?
+        </label>
 
         <!-- Save -->
         <div class="text-center mb-4">

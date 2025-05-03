@@ -96,6 +96,8 @@ def save_plan():
     end_date = request.form['endDate']
     travelers = request.form['travelers']
     budget = request.form['budget']
+    public = True if request.form['public'] else False
+    print('public from create: ', public)
 
     airline = request.form['airline']
     flight_number = request.form['flight_number']
@@ -135,7 +137,8 @@ def save_plan():
             end_date=datetime.strptime(end_date, '%Y-%m-%d').date(),
             travelers=int(travelers),
             budget=int(budget),
-            user_id=current_user.id  
+            public=public,
+            user_id=current_user.id
         )
         db.session.add(new_trip)
         db.session.flush()  
@@ -193,6 +196,7 @@ def save_plan():
 
 @views.route('/update-plan', methods=['POST'])
 def update_plan():    
+    print('update plan is called')
     try:
         trip_id = request.form.get('trip_id')
         if not trip_id:
@@ -208,6 +212,10 @@ def update_plan():
         trip.end_date = datetime.strptime(request.form['endDate'], '%Y-%m-%d').date()
         trip.travelers = request.form['travelers']
         trip.budget = request.form['budget']
+        trip.public = True if request.form.get('public') else False
+      
+        print('destination: ', trip.destination)
+        print('public: ', trip.public)
         
         flight = Flight.query.filter_by(trip_id=trip_id).first() 
       
@@ -253,6 +261,7 @@ def update_plan():
                 description=activity_descriptions[i]
             )
             db.session.add(new_activity)
+            
         
         db.session.commit()
     

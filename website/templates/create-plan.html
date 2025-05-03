@@ -40,6 +40,17 @@
         font-weight: bold;
         color: red;
       }
+      .public-checkbox {
+        display: block;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      .big-checkbox {
+        transform: scale(1.2);
+        margin-right: 8px;
+      }
     </style>
   </head>
   <body class="min-vh-100 d-flex flex-column">
@@ -186,31 +197,6 @@
           <button type="button" class="btn btn-primary" id="addActivityBtn">Add Another Activity</button>
         </div>
 
-        <!-- <script>
-          document.getElementById('addActivityBtn').addEventListener('click', function () {
-            const newActivity = document.createElement('div');
-            newActivity.classList.add('activity-section');
-
-            newActivity.innerHTML = `<hr> <div class="form-group">
-                <label for="activity_name">Activity Name</label>
-                <input type="text" name="activity_name[]" class="form-control" placeholder="e.g. Try local foods!" />
-              </div>
-              <div class="form-group">
-                <label for="activity_location">Location</label>
-                <input type="text" name="activity_location[]" class="form-control" placeholder="Address" />
-              </div>
-              <div class="form-group">
-                <label for="activity_date">Activity Date</label>
-                <input type="date" name="activity_date[]" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
-              </div>`;
-            document.getElementById('activity-container').appendChild(newActivity);
-          });
-        </script> -->
-
         <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
         <div id="trip-overview">
           <h2>Trip Overview</h2>
@@ -221,6 +207,11 @@
           <p>🎉 <strong>Activities: </strong></p>
           <ul id="preview-activities"></ul>
         </div>
+        
+        <!-- Make public on explore-->
+        <label class="public-checkbox"> 
+          <input class="big-checkbox" type="checkbox" name="public" id="public"/> Make this trip public (show on Explore)? 
+        </label>
 
         <script>
           function updatePreview() {
@@ -300,8 +291,8 @@
         
           window.addEventListener('DOMContentLoaded', updatePreview);
         </script>
-        
-        
+
+
         <!-- Save -->
         <div class="text-center mb-4">
           <a>
