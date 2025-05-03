@@ -32,7 +32,7 @@ AMADEUS_CLIENT_ID=<here you put your client id>
 AMADEUS_CLIENT_SECRET=<here you put your secret>
 ```
 
-5. Install all necessary dependencies with `pip install -r requitements.txt`
+5. Install all necessary dependencies with `pip install -r requirements.txt`
 6. Start the project with `flask run`
 7. Following the instructions on your CLI, open the website through the port given
 
