@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
       .hero {
@@ -114,6 +115,8 @@
       }
 
       .trip-info-card {
+        min-height: 160px;
+        min-width: 300px;
         background-color: #f9f9f9;
         border-radius: 8px;
         padding: 15px;
@@ -129,7 +132,7 @@
       }
 
       .trip-info-detail {
-        font-size: 1.3rem;
+        font-size: 1.15rem;
         color: #333;
         line-height: 1;
       }
@@ -169,62 +172,74 @@
     <div class="trip-summary">
       <h2>{{ user.name }}'s Trip Overview</h2>
 
-      <section class="trip-info-card">
-        <h3 class="trip-info-title">📍 Destination</h3>
-        <p class="trip-info-detail"><strong>{{ trip.destination }}</strong></p>
-      </section>
+      <!-- Row 1: Destination AND Dates -->
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <section class="trip-info-card">
+            <h3 class="trip-info-title">📍 Destination</h3>
+            <p class="trip-info-detail">Location: <strong>{{ trip.destination }}</strong></p>
+          </section>
+        </div>
+        <div class="col-md-6">
+          <section class="trip-info-card">
+            <h3 class="trip-info-title">📅 Dates</h3>
+            <p class="trip-info-detail">Start Date: <strong>{{ trip.start_date.strftime('%b %d, %Y') }}</strong></p>
+            <p class="trip-info-detail">End Date: <strong>{{ trip.end_date.strftime('%b %d, %Y') }}</strong></p>
+          </section>
+        </div>
+      </div>
 
-      <section class="trip-info-card">
-        <h3 class="trip-info-title">📅 Dates</h3>
-        <p class="trip-info-detail"><strong>{{ trip.start_date.strftime('%b %d, %Y') }}</strong> to <strong>{{ trip.end_date.strftime('%b %d, %Y') }}</strong></p>
-      </section>
-
-      {% if flight %}
-      <section class="trip-info-card">
-        <h3 class="trip-info-title">✈️ Flight</h3>
-        <p class="trip-info-detail"><strong>{{ flight.airline }} {{ flight.flight_number }}</strong></p>
-        <p class="trip-info-detail">
-          Departure: <strong>{{ flight.departure_date.strftime('%b %d, %Y') }}</strong> at
-          <strong>{{ flight.departure_time.strftime('%I:%M %p') }}</strong>
-        </p>
-      </section>
-      {% endif %} {% if hotel %}
-
-      <section class="trip-info-card">
-        <h3 class="trip-info-title">🏨 Hotel</h3>
-        <p class="trip-info-detail"><strong>{{ hotel.hotel_name }}</strong></p>
-        <p class="trip-info-detail">Location: <strong>{{ hotel.location }}</strong></p>
-      </section>
-
-      {% endif %} {% if activities %}
-      <section class="trip-info-card">
-        <h3>🎯 Activities</h3>
-        {% if activities %}
-        <table class="activity-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for activity in activities|sort(attribute='date') %}
-            <tr>
-              <td>{{ activity.activity_name }}</td>
-              <td>{{ activity.location }}</td>
-              <td>{{ activity.date.strftime('%b %d, %Y') }}</td>
-              <td>{{ activity.description or '—' }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        {% else %}
-        <p>No activities planned yet.</p>
+      <!-- Row 2: Flight AND Hotel -->
+      <div class="row mt-3">
+        {% if flight %}
+        <div class="col-md-6">
+          <section class="trip-info-card">
+            <h3 class="trip-info-title">✈️ Flight</h3>
+            <p class="trip-info-detail">Flight Number: <strong>{{ flight.airline }} {{ flight.flight_number }}</strong></p>
+            <p class="trip-info-detail">Departure Date: <strong>{{ flight.departure_date.strftime('%b %d, %Y') }}</strong></p>
+            <p class="trip-info-detail">Departure Time: <strong>{{ flight.departure_time.strftime('%I:%M %p') }}</strong></p>
+          </section>
+        </div>
+        {% endif %} {% if hotel %}
+        <div class="col-md-6">
+          <section class="trip-info-card">
+            <h3 class="trip-info-title">🏨 Hotel</h3>
+            <p class="trip-info-detail">Hotel Name: <strong>{{ hotel.hotel_name }}</strong></p>
+            <p class="trip-info-detail">Location: <strong>{{ hotel.location }}</strong></p>
+          </section>
+        </div>
         {% endif %}
-      </section>
+      </div>
 
+      <!-- Row 3: Activities -->
+      {% if activities %}
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <section class="trip-info-card">
+            <h3>🎯 Activities</h3>
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Date</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for activity in activities|sort(attribute='date') %}
+                <tr>
+                  <td>{{ activity.activity_name }}</td>
+                  <td>{{ activity.location }}</td>
+                  <td>{{ activity.date.strftime('%b %d, %Y') }}</td>
+                  <td>{{ activity.description or '—' }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
       {% endif %}
       <div class="d-flex justify-content-center mt-5 mb-3">
         <div class="d-flex gap-2">
