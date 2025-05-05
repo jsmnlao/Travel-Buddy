@@ -1,6 +1,6 @@
 from flask import current_app, Blueprint, render_template, abort, request, redirect, jsonify
 from flask_login import login_required, current_user
-from .models import User, Trip, Flight, Activity, Hotel, Booking
+from .models import User, Trip, Flight, Activity, Hotel, Booking, Favorites
 import sqlite3
 from datetime import datetime
 from flask import flash, url_for
@@ -103,7 +103,25 @@ def delete_activity(activity_id):
         flash('An occured while performing action,', 'danger')
         return redirect(url_for('views.edit_plan', trip_id=trip_id))
     
+@views.route('/like-trip/<int:trip_id>', methods=['POST'])
+@login_required
+def like_trip(trip_id):
+    trip = Trip.query.get_or_404(trip_id)
+    favorite = Favorites.query.filter_by(user_id=current_user.id, trip_id=trip_id).first()
 
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        liked = False
+    else:
+        new_fav = Favorites(user_id=current_user.id, trip_id=trip_id)
+        db.session.add(new_fav)
+        db.session.commit()
+        liked = True
+
+    return jsonify({'liked': liked})
+    
+    
 @views.route('/explore')
 def explore():
     public_trips = Trip.query.filter_by(public=True).all()      # retrieve Public trips
