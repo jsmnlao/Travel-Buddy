@@ -321,33 +321,35 @@ def generate_itinerary():
         return jsonify({ "error": "Invalid date format." }), 400
 
     prompt = f"""
-        You are a travel planner.
+        You are a professional travel planner and itinerary generator.
 
-        Create a {days}-day travel itinerary for a trip to {destination}.
-        There are {travelers} traveler(s) and a total budget of ${budget}.
+        Create a detailed {days}-day travel itinerary for a trip to {destination}.
+        There will be {travelers} traveler(s), and the total budget for the trip is ${budget}. 
+        The trip starts on {start_date} and ends on {end_date}. 
+        Choose activities that match the weather and seasonal conditions during those dates.
 
-        Return ONLY a valid JSON array.  
-        Each item in the array should include:
+        The response must be a **valid JSON array**. Do not include any commentary or formatting outside the array.
 
-        - "name": A short name for the activity  
-        - "address": The location of the activity (e.g. venue, neighborhood, or landmark)  
-        - "date": A real date in YYYY-MM-DD format (one per day of the trip)  
-        - "description": A sentence or two about the activity
+        Each item in the array should represent **one activity per day**, and contain the following fields:
 
-        Do not include any explanation or intro — only return the JSON array.
+        - "name": A short, engaging name for the activity  
+        - "address": A specific location, neighborhood, or venue  
+        - "date": A real date in YYYY-MM-DD format  
+        - "description": A concise description (1–2 sentences) about the activity
 
-        Example:
+        Keep each activity realistic and within the budget constraints. Vary activity types (e.g. sightseeing, dining, nature, culture, etc.).
 
+        Example output format:
         [
             {{
-                "name": "Visit Tokyo Tower",
-                "address": "Minato City, Tokyo",
-                "date": "2025-05-06",
-                "description": "Enjoy panoramic views of the city from the iconic Tokyo Tower."
+            "name": "Visit Tokyo Tower",
+            "address": "Minato City, Tokyo",
+            "date": "2025-05-06",
+            "description": "Enjoy panoramic views of the city from the iconic Tokyo Tower."
             }},
             ...
         ]
-    """
+        """
 
     try:
         response = requests.post(
