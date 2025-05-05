@@ -119,23 +119,24 @@
         button.addEventListener('click', function (event) {
           event.preventDefault();
           const tripId = this.dataset.tripId;
-          const icon = this.querySelector('i'); // Get the heart icon
-
+          const icon = this.querySelector('i');
           fetch(`/like-trip/${tripId}`, {
             method: 'POST',
-            credentials: 'same-origin' // Includes cookies for auth
+            credentials: 'same-origin'
           })
             .then((res) => res.json())
             .then((data) => {
               if (data.liked) {
-                icon.classList.remove('far'); // Empty heart
-                icon.classList.add('fas'); // Filled heart
+                icon.classList.remove('far');
+                icon.classList.add('fas');
               } else {
-                icon.classList.remove('fas'); // Filled heart
-                icon.classList.add('far'); // Empty heart
+                icon.classList.remove('fas');
+                icon.classList.add('far');
               }
             })
-            .catch((err) => console.error('Error liking trip:', err));
+            .catch((err) => {
+              console.error('Error liking trip:', err);
+            });
         });
       });
     </script>

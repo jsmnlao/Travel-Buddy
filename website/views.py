@@ -25,7 +25,8 @@ def landing():
 @login_required
 def home():
     trips = Trip.query.filter_by(user_id=current_user.id).all()
-    return render_template("home.html", user=current_user, trips=trips)
+    favorites = db.session.query(Trip).join(Favorites).filter(Favorites.user_id == current_user.id).all()
+    return render_template("home.html", user=current_user, trips=trips, favorites=favorites)
 
 
 @views.route('/plan/<int:trip_id>')
@@ -107,6 +108,8 @@ def delete_activity(activity_id):
 @login_required
 def like_trip(trip_id):
     trip = Trip.query.get_or_404(trip_id)
+    if trip.user_id != current_user.id:
+        abort(403)
     favorite = Favorites.query.filter_by(user_id=current_user.id, trip_id=trip_id).first()
 
     if favorite:
@@ -125,7 +128,8 @@ def like_trip(trip_id):
 @views.route('/explore')
 def explore():
     public_trips = Trip.query.filter_by(public=True).all()      # retrieve Public trips
-    return render_template("explore.html", user=current_user, trips=public_trips)
+    favorites = {fav.trip_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
+    return render_template("explore.html", user=current_user, trips=public_trips, favorites=favorites)
 
 @views.route('/signup')
 def signup():

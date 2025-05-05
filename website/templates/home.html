@@ -124,6 +124,7 @@
       {% endfor %} {% endif %} {% endwith %}
 
       <!-- If there are trips, populate them -->
+      <h2 class="mb-3">My Trips</h2>
       {% if trips %} {% for trip in trips %} {% set view_url = url_for('views.view_plan', trip_id=trip.id) %}
       <div class="plan-card mb-4 p-4 shadow-sm clickable-card" onclick="window.location.href='{{ view_url }}';" style="cursor: pointer">
         <div class="d-flex justify-content-between align-items-start">
@@ -169,6 +170,32 @@
             Create a Plan
           </button>
         </form>
+      </div>
+      {% endif %} {% if favorites %}
+      <h3 class="mb-3">Favorited Trips</h3>
+      <div class="row">
+        {% for trip in favorites %}
+        <div class="col-md-4 mb-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ trip.destination }}</h5>
+              <p class="card-text">
+                Duration: {{ (trip.end_date - trip.start_date).days + 1 }} day{{ 's' if (trip.end_date - trip.start_date).days + 1 != 1 else '' }}<br />
+                Travelers: {{ trip.travelers }}<br />
+                Budget: ${{ trip.budget }}
+              </p>
+              <a href="{{ url_for('views.explore_plan', trip_id=trip.id) }}" class="btn btn-outline-primary">View Trip</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div>
+        <h2 class="mb-3">Favorited Trips</h2>
+        <div class="card mb-4 p-4 text-center text-muted">
+          <p>No favorite trips yet.</p>
+        </div>
       </div>
       {% endif %}
     </section>
