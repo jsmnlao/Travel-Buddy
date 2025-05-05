@@ -247,13 +247,11 @@
               const date = activity.querySelector('input[name="activity_date[]"]').value;
               const desc = activity.querySelector('textarea[name="activity_description[]"]').value;
 
-              const li = document.createElement('li');
-              if (desc.trim()) {
-                li.textContent = `${name} at ${loc} on ${date} — ${desc}`;
-              } else {
-                li.textContent = `${name} at ${loc} on ${date}`;
+              if (name && loc && date) {
+                const li = document.createElement('li');
+                li.textContent = desc ? `${name} at ${loc} on ${date} — ${desc}` : `${name} at ${loc} on ${date}`;
+                previewActivities.appendChild(li);
               }
-              previewActivities.appendChild(li);
             });
           }
 
