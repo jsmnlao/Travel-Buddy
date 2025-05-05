@@ -62,7 +62,6 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
 .webassets-cache
 
 # Scrapy stuff:
@@ -98,11 +97,3 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
-# llama file
-<<<<<<< HEAD
-*.gguf
-=======
-.gguf
-model.gguf
->>>>>>> main
