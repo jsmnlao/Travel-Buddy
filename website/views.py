@@ -84,6 +84,25 @@ def delete_plan(trip_id):
     except Exception as ex:
         flash('An occured while performing action,', 'danger')
         return redirect(url_for('views.home'))        
+    
+    
+@views.route('/delete-activity/<int:activity_id>', methods=['POST'])
+@login_required
+def delete_activity(activity_id):
+    activity = Activity.query.get(activity_id)
+    
+    try:
+        if activity:
+            trip_id= activity.trip_id
+            db.session.delete(activity)
+            db.session.commit()
+            flash('Your activity has deleted successfully!', 'success')
+            return redirect(url_for('views.edit_plan', trip_id=trip_id))
+
+    except Exception as ex:
+        flash('An occured while performing action,', 'danger')
+        return redirect(url_for('views.edit_plan', trip_id=trip_id))
+    
 
 @views.route('/explore')
 def explore():
