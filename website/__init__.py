@@ -3,25 +3,22 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 import os
 from flask_login import LoginManager
-from dotenv import load_dotenv
-from amadeus import Client
-
-load_dotenv()
+from llama_cpp import Llama
 
 db = SQLAlchemy()
 DB_NAME = "travelbuddy.db"
 
-amadeus = Client(
-    client_id=os.getenv("AMADEUS_CLIENT_ID"),
-    client_secret=os.getenv("AMADEUS_CLIENT_SECRET")
-)
+llm = None
 
 def create_app():
+    global llm
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'asdfa asdfa'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config['DATABASE'] = os.path.join(app.instance_path, DB_NAME)
     db.init_app(app)
+
+    llm = Llama(model_path="./model.gguf", n_ctx=512)
 
     from .views import views
     from .auth import auth

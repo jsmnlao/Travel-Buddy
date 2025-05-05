@@ -5,8 +5,7 @@ import sqlite3
 from datetime import datetime
 from flask import flash, url_for
 from . import db
-from . import amadeus
-from amadeus import ResponseError
+from . import llm
 
 # views.py are end points for the url to navigate around the webpage
 
@@ -130,7 +129,7 @@ def save_plan():
     activity_lists = [activity_names, activity_locations, activity_dates]
     for activity_list in activity_lists:
         if any(item.strip() == '' for item in activity_list):
-            flash('Please fill out all all required.')
+            flash('Please fill in all required fields.')
             return redirect(request.referrer or url_for('create_plan'))
 
     # insert to db
@@ -278,20 +277,18 @@ def update_plan():
     return redirect('/home')
 
 
-# Testing information from amadeus
-@views.route('/flights', methods=['GET'])
-def search_flights():
-    origin = request.args.get('origin', 'SFO')
-    destination = request.args.get('destination', 'JFK')
-    departure_date = request.args.get('date', '2025-06-01')
+@views.route('/chat', methods=['POST'])
+def chat():
+    data = request.get_json()
+    prompt = data.get("prompt", "")
 
-    try:
-        response = amadeus.shopping.flight_offers_search.get(
-            originLocationCode=origin,
-            destinationLocationCode=destination,
-            departureDate=departure_date,
-            adults=1
-        )
-        return jsonify(response.data)
-    except ResponseError as error:
-        return jsonify({'error': str(error)}), 500
+    if not prompt:
+        return jsonify({"error":"Prompt is required"}), 400
+    
+    output = llm(prompt, max_tokens=100, stop=['</s>'])
+    return jsonify({"response": output["choices"][0]["text"].strip()})
+
+
+@views.route("/ai", methods=["GET"])
+def ai():
+    return render_template("ai.html")
