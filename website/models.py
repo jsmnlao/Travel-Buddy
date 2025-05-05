@@ -10,11 +10,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(200), unique=True)
     password = db.Column(db.String(200))
 
-    #trips = db.relationship('Trip', backref='user')             # list of all trips
-    #itineraries = db.relationship('Itinerary', backref='user')  # list of all itineraries
-    #flights = db.relationship('Flight', backref='user')         # list of all flights
-    #hotels = db.relationship('Hotel', backref='user')           # list of all hotels
-
 class Trip(db.Model):
     __tablename__ = 'trip'
     id = db.Column(db.Integer, primary_key=True)
@@ -69,10 +64,8 @@ class Booking(db.Model):
     flight_id = db.Column(db.Integer, db.ForeignKey('flight.id', ondelete="CASCADE"))
     hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id', ondelete="CASCADE"))
     
-# class Itinerary(db.Model):
-#     __tablename__ = 'itinerary'
-#     id = db.Column(db.Integer, primary_key=True)
-    
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))   # each trip belongs to a user
-#     trip_id = db.Column(db.Integer, db.ForeignKey('trip.id'))
-#     activities = db.relationship('Activity', backref='itinerary', cascade="all, delete-orphan")    # many activities in itinerary
+class Favorites(db.Model):
+    __tablename__ = 'favorites'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"))
+    trip_id = db.Column(db.Integer, db.ForeignKey('trip.id', ondelete="CASCADE"))

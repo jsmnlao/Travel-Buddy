@@ -175,29 +175,10 @@
           <section class="trip-info-card">
             <h3 class="trip-info-title">📍 Destination</h3>
             <p class="trip-info-detail">Location: <strong>{{ trip.destination }}</strong></p>
+            <p class="trip-info-detail">Budget: <strong>${{trip.budget}}</strong></p>
           </section>
         </div>
-        <div class="col-md-6">
-          <section class="trip-info-card">
-            <h3 class="trip-info-title">📅 Dates</h3>
-            <p class="trip-info-detail">Start Date: <strong>{{ trip.start_date.strftime('%b %d, %Y') }}</strong></p>
-            <p class="trip-info-detail">End Date: <strong>{{ trip.end_date.strftime('%b %d, %Y') }}</strong></p>
-          </section>
-        </div>
-      </div>
-
-      <!-- Row 2: Flight AND Hotel -->
-      <div class="row mt-3">
-        {% if flight %}
-        <div class="col-md-6">
-          <section class="trip-info-card">
-            <h3 class="trip-info-title">✈️ Flight</h3>
-            <p class="trip-info-detail">Flight Number: <strong>{{ flight.airline }} {{ flight.flight_number }}</strong></p>
-            <p class="trip-info-detail">Departure Date: <strong>{{ flight.departure_date.strftime('%b %d, %Y') }}</strong></p>
-            <p class="trip-info-detail">Departure Time: <strong>{{ flight.departure_time.strftime('%I:%M %p') }}</strong></p>
-          </section>
-        </div>
-        {% endif %} {% if hotel %}
+        {% if hotel %}
         <div class="col-md-6">
           <section class="trip-info-card">
             <h3 class="trip-info-title">🏨 Hotel</h3>
@@ -208,7 +189,7 @@
         {% endif %}
       </div>
 
-      <!-- Row 3: Activities -->
+      <!-- Row 2: Activities -->
       {% if activities %}
       <div class="row mt-4">
         <div class="col-md-12">
@@ -219,7 +200,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Location</th>
-                  <th>Date</th>
+                  <th>Day</th>
                   <th>Description</th>
                 </tr>
               </thead>
@@ -228,7 +209,7 @@
                 <tr>
                   <td>{{ activity.activity_name }}</td>
                   <td>{{ activity.location }}</td>
-                  <td>{{ activity.date.strftime('%b %d, %Y') }}</td>
+                  <td>Day {{ loop.index }}</td>
                   <td>{{ activity.description or '—' }}</td>
                 </tr>
                 {% endfor %}
