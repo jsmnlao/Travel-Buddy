@@ -1,6 +1,6 @@
 # ✈️ Travel Buddy
 
-Travel Buddy aims to ease the stress of planning a trip. Everyone loves to travel but rarely does anyone like to plan. With Travel Buddy, users can simply input a desired destination and receive suggestions from Travel Buddy. Users can customize and finalize plans within the system by manually setting flight dates and times, hotel information, and fun excursions into our system. Are users completely lost with where to start? Our Llama integration can list out an entire suggested trip to their destination, within their budget. Travel Buddy displays all this information out in a dashboard to give users a clear overview of their ideal trip.
+Travel Buddy aims to ease the stress of planning a trip. Everyone loves to travel but rarely does anyone like to plan. With Travel Buddy, users can simply input a desired destination and receive suggestions from Travel Buddy. Users can customize and finalize plans within the system by manually setting flight dates and times, hotel information, and fun excursions into our system. Are users completely lost with where to start? Our LLaMA integration can list out an entire suggested trip to their destination, within their budget. Travel Buddy displays all this information out in a dashboard to give users a clear overview of their ideal trip.
 
 ## 🙌 Team Members
 
@@ -17,7 +17,7 @@ Travel Buddy offers a variety of features designed to allow users to customize a
 
 1. **Comprehensive Dashboard**: This hub presents all the necessary trip information in a user-friendly way. This dashboard gives an organized view of the itinerary, flight information, booking confirmations, and any activities on the schedule. With this feature, every aspect of the trip is contained in one central place for easy access.
 2. **Customizable Trip Planning**: Users can manually input key details such as flight dates and flight number, hotel reservation, and activities. This feature allows user to have full control over their itinerary and fine-tune their trip plans to their personal preferences.
-3. **AI-Generated Itinerary**: By integrating with the Llama, users can automatically generate a complete trip itinerary if they don’t know where to start. Based on the user’s destination and budget, this AI-driven feature will recommend a full itinerary and suggest activities for users who are not sure where to begin.
+3. **AI-Generated Itinerary**: By integrating with the LLaMA, users can automatically generate a complete trip itinerary if they don’t know where to start. Based on the user’s destination and budget, this AI-driven feature will recommend a full itinerary and suggest activities for users who are not sure where to begin.
 
 Our app aims for a wide range of users who are seeking a simpler way to plan their trips. Our primary audience includes:
 
@@ -29,10 +29,10 @@ Travel Buddy is designed to tailor to each traveler’s needs by offering users 
 
 ## 📚 Technical Stack
 
-- Frontend: **Bootstrap** framework for built-in components, consistency, and responsiveness
-- Backend: **Flask** (Python) to handle backend logic, routing, processing user input, and integration with external services
-- Database: **SQLite**, a simple and lightweight database ideal for small applications and its easy integration with Flask
-- External: **Llama**
+- Frontend: **Bootstrap** - framework for built-in components, consistency, and responsiveness.
+- Backend: **Flask** - (Python) to handle backend logic, routing, processing user input, and integration with external services.
+- Database: **SQLite** - a simple and lightweight database ideal for small applications and its easy integration with Flask.
+- External: **LLaMA** - powers local language understanding and generation using a lightweight transformer model.
 
 ## 👩🏽‍💻 Setup & Execution
 
@@ -40,8 +40,11 @@ Travel Buddy is designed to tailor to each traveler’s needs by offering users 
 
 1. Clone the reposity with `git clone` and the web URL found in the `<> Code` drop down above.
 2. Download and install Python on your device. You can follow the instructions [here](https://www.python.org/downloads/).
-3. Download the Llama file from Hugging Face that can be found [here](https://huggingface.co/TheBloke/Llama-2-7B-GGUF/blob/main/llama-2-7b.Q4_K_M.gguf). Rename the file `model.gguf` and then move the file into the root directory.
+3. Download the LLaMA file from Hugging Face that can be found [here](https://huggingface.co/TheBloke/Llama-2-7B-GGUF/blob/main/llama-2-7b.Q4_K_M.gguf). Move the file into the `models` directory.
 4. Navigate to the project through your CLI
-5. Install all necessary dependencies with `pip install -r requirements.txt`
-6. Start the project with `flask run`
-7. Following the instructions on your CLI, open the website through the port given
+5. Start the virtual environment by typing `source env/bin/activate` for Mac or `env\Scripts\activate.bat` for Windows (CMD) or `env\Scripts\Activate.ps1` for Windows (PowerShell)
+6. Install all necessary dependencies with `pip install -r requirements.txt`
+7. Start the project with `flask run`
+8. Following the instructions on your CLI, open the website through the port given
+
+To deactivate the environment use `deactivate`.

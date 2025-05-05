@@ -100,4 +100,4 @@ venv.bak/
 dmypy.json
 
 # llama file
-.gguf
+*.gguf

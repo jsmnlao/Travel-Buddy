@@ -79,14 +79,17 @@
       </div>
     </section>
 
-    <section class="container my-5">
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      {% endfor %} {% endif %} {% endwith %}
-    </section>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+    {% endif %}
+  {% endwith %}
+  
 
     <section>
       <form id="form-container" method="POST" action="{{ url_for('views.save_plan') }}" class="container my-5">
@@ -96,7 +99,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="destination">Destination</label>
-              <input type="text" class="form-control" name="destination" id="destination" placeholder="e.g. Tokyo, Japan" value="Hong Kong" />
+              <input type="text" class="form-control" name="destination" id="destination" placeholder="e.g. Tokyo, Japan"/>
             </div>
             <div class="form-group col-md-3">
               <label for="startDate">Start Date</label>
@@ -110,11 +113,11 @@
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="travelers">Number of Travelers</label>
-              <input type="number" class="form-control" name="travelers" id="travelers" value="1" min="1" />
+              <input type="number" class="form-control" name="travelers" id="travelers" placeholder="1" min="1" />
             </div>
             <div class="form-group col-md-4">
               <label for="budget">Budget ($)</label>
-              <input type="number" class="form-control" name="budget" id="budget" placeholder="Enter max budget" value="10000" />
+              <input type="number" class="form-control" name="budget" id="budget" placeholder="Max budget" />
             </div>
           </div>
         </div>
@@ -123,17 +126,14 @@
         <div class="card mb-4 p-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="mb-0">Flight Info</h4>
-            <button class="btn btn-outline-primary">
-              <i class="bi bi-stars"></i>
-            </button>
           </div>
           <div class="form-group">
             <label for="airline">Airline Info</label>
-            <input type="text" class="form-control" name="airline" id="airline" placeholder="Airline Name" value="United" />
+            <input type="text" class="form-control" name="airline" id="airline" placeholder="Airline Name"/>
           </div>
           <div class="form-group">
             <label for="flight_number">Flight Number</label>
-            <input type="text" class="form-control" name="flight_number" id="flight_number" placeholder="Flight #" value="12345" />
+            <input type="text" class="form-control" name="flight_number" id="flight_number" placeholder="Flight #"/>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
@@ -151,17 +151,14 @@
         <div class="card mb-4 p-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="mb-0">Hotel Info</h4>
-            <button class="btn btn-outline-primary">
-              <i class="bi bi-stars"></i>
-            </button>
           </div>
           <div class="form-group">
             <label for="hotel_name">Hotel Name</label>
-            <input type="text" class="form-control" name="hotel_name" id="hotel_name" placeholder="eg. Hilton Hotels" value="Ritz Carlton" />
+            <input type="text" class="form-control" name="hotel_name" id="hotel_name" placeholder="e.g. Hilton Hotels" />
           </div>
           <div class="form-group">
             <label for="hotel_location">Location</label>
-            <input type="text" class="form-control" name="hotel_location" id="hotel_location" placeholder="Address" value="123 Street" />
+            <input type="text" class="form-control" name="hotel_location" id="hotel_location" placeholder="Address" />
           </div>
         </div>
 
@@ -170,20 +167,24 @@
         <div class="card mb-4 p-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="mb-0">Activities</h4>
-            <button class="btn btn-outline-primary">
-              <i class="bi bi-stars"></i>
-            </button>
+            <div>
+              <!-- Generate Itinerary Button -->
+              <button type="button" id="generateItineraryBtn" class="btn btn-outline-primary mt-3 mb-3">
+                <i class="bi bi-stars"></i>
+                  Generate Itinerary with LLaMA
+              </button>
+            </div>
           </div>
 
           <div id="activity-container">
             <div class="activity-section">
               <div class="form-group">
                 <label for="activity_name[]">Activity Name</label>
-                <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods! " value="Eat dim sum" />
+                <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods! " />
               </div>
               <div class="form-group">
                 <label for="activity_location[]">Location</label>
-                <input type="text" class="form-control" name="activity_location[]" placeholder="Address" value="King's Road" />
+                <input type="text" class="form-control" name="activity_location[]" placeholder="Address"/>
               </div>
               <div class="form-group">
                 <label for="activity_date[]">Activity Date</label>
@@ -191,16 +192,19 @@
               </div>
               <div class="form-group">
                 <label for="activity_description[]">Add Description (optional)</label>
-                <textarea class="form-control" name="activity_description[]" rows="3" placeholder="Describe activity...">Eat food!</textarea>
+                <textarea class="form-control" name="activity_description[]" rows="3" placeholder="Describe activity..."></textarea>
               </div>
             </div>
           </div>
           <button type="button" class="btn btn-primary" id="addActivityBtn">Add Another Activity</button>
         </div>
 
+
+      <br/>
+
         <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
         <div id="trip-overview">
-          <h2>Trip Overview</h2>
+          <h2 class="mb-3">Trip Overview</h2>
           <p>📍 <strong>Destination: </strong> <span id="preview-destination"></span></p>
           <p>📅 <strong>Dates: </strong><span id="preview-dates"></span></p>
           <p>✈️ <strong>Flight: </strong><span id="preview-flight"></span></p>
@@ -212,6 +216,7 @@
         <!-- Make public on explore-->
         <label class="public-checkbox"> <input class="big-checkbox" type="checkbox" name="public" id="public" /> Make this trip public (show on Explore)? </label>
 
+        <!-- Dynamically Update the Bottom Overview Section -->
         <script>
           function updatePreview() {
             document.getElementById('preview-destination').textContent = document.getElementById('destination').value;
@@ -349,6 +354,95 @@
         });
       </script>
     </section>
+
+    <!-- Handles the generate itinterary with ai button -->
+    <script>
+      document.getElementById("generateItineraryBtn").addEventListener("click", async function () {
+        // trip info from form
+        const data = {
+          destination: document.getElementById("destination").value,
+          start_date: document.getElementById("startDate").value,
+          end_date: document.getElementById("endDate").value,
+          travelers: document.getElementById("travelers").value,
+          budget: document.getElementById("budget").value
+        };
+
+        // input validation
+        /*
+        const requiredFields = [destination, start_date, end_date, travelers, budget]
+        let isValid = true;
+
+        requiredFields.forEach(function (id) {
+            const input = document.getElementById(id);
+            const label = document.querySelector(`label[for="${id}"]`);
+            print('label: ', input, 'input: ', input);
+
+            if (input && label) {
+              if (!input.value.trim()) {
+                label.classList.add('bold-label');
+                input.classList.add('input-warning');
+                isValid = false;
+              } else {
+                label.classList.remove('bold-label');
+                input.classList.remove('input-warning');
+              }
+            }
+          });
+
+          if (!isValid) {
+            e.preventDefault();
+            alert('Please fill in all required fields');
+            return;
+          }*/
+    
+        // send data to backend
+        const response = await fetch("/generate-itinerary", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+    
+        const itinerary = await response.json();
+        const container = document.getElementById("activity-container");
+
+        const MAX_ACTIVITIES_TO_ADD = 10;
+        let added = 0;
+    
+        // append each new activity
+        for (const act of itinerary.activities) {
+          if (added >= MAX_ACTIVITIES_TO_ADD) break;
+
+          const section = document.createElement("div");
+          section.classList.add("activity-section");
+          section.innerHTML = `
+            <hr>
+            <div class="form-group">
+              <label>Activity Name</label>
+              <input type="text" name="activity_name[]" class="form-control" value="${act.name}" />
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input type="text" name="activity_location[]" class="form-control" value="${act.location}" />
+             </div>
+            <div class="form-group">
+              <label>Activity Date</label>
+              <input type="date" name="activity_date[]" class="form-control" value="${act.date}" />
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea name="activity_description[]" class="form-control" rows="3">${act.description}</textarea>
+            </div>
+          `;
+          container.appendChild(section);
+          added++;
+        }
+
+        updatePreview();
+      });
+    </script>
+        
 
     <!-- Footer -->
     <footer class="footer mt-auto">

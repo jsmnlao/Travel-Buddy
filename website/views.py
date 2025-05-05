@@ -5,7 +5,7 @@ import sqlite3
 from datetime import datetime
 from flask import flash, url_for
 from . import db
-from . import llm
+from llama_service import generate_itinerary_prompt
 
 # views.py are end points for the url to navigate around the webpage
 
@@ -277,18 +277,17 @@ def update_plan():
     return redirect('/home')
 
 
-@views.route('/chat', methods=['POST'])
-def chat():
+@views.route('/generate-itinerary', methods=['POST'])
+def generate_itinerary():
     data = request.get_json()
-    prompt = data.get("prompt", "")
 
-    if not prompt:
-        return jsonify({"error":"Prompt is required"}), 400
-    
-    output = llm(prompt, max_tokens=100, stop=['</s>'])
-    return jsonify({"response": output["choices"][0]["text"].strip()})
+    destination = data.get('destination')
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    travelers = data.get('travelers')
+    budget = data.get('budget')
 
+    # Call llama_service.py with generate_itinerary
+    itinerary = generate_itinerary_prompt(destination, start_date, end_date, budget, travelers)
 
-@views.route("/ai", methods=["GET"])
-def ai():
-    return render_template("ai.html")
+    return jsonify({"activities": itinerary})

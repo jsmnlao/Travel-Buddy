@@ -18,7 +18,10 @@ def create_app():
     app.config['DATABASE'] = os.path.join(app.instance_path, DB_NAME)
     db.init_app(app)
 
-    llm = Llama(model_path="./model.gguf", n_ctx=512)
+    print("Loading model...")
+    llm = Llama(model_path="./models/llama-2-7b.Q4_K_M.gguf", n_ctx=512)
+    print("Model loaded!")
+
 
     from .views import views
     from .auth import auth
