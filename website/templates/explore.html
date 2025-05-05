@@ -120,6 +120,8 @@
           event.preventDefault();
           const tripId = this.dataset.tripId;
           const icon = this.querySelector('i');
+
+          // Send request to toggle favorite
           fetch(`/like-trip/${tripId}`, {
             method: 'POST',
             credentials: 'same-origin'

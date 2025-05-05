@@ -129,6 +129,8 @@ def like_trip(trip_id):
 def explore():
     public_trips = Trip.query.filter_by(public=True).all()      # retrieve Public trips
     favorites = {fav.trip_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
+    for trip in public_trips:
+        trip.liked = trip.id in favorites
     return render_template("explore.html", user=current_user, trips=public_trips, favorites=favorites)
 
 @views.route('/signup')
