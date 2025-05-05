@@ -203,15 +203,20 @@
       <br/>
 
         <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
-        <div id="trip-overview">
-          <h2 class="mb-3">Trip Overview</h2>
-          <p>📍 <strong>Destination: </strong> <span id="preview-destination"></span></p>
-          <p>📅 <strong>Dates: </strong><span id="preview-dates"></span></p>
-          <p>✈️ <strong>Flight: </strong><span id="preview-flight"></span></p>
-          <p>🏨 <strong>Hotel: </strong> <span id="preview-hotel"></span></p>
-          <p>🎉 <strong>Activities: </strong></p>
-          <ul id="preview-activities"></ul>
+        <div class="card mb-4 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div id="trip-overview">
+              <h2>Trip Overview</h2>
+              <p>📍 <strong>Destination: </strong> <span id="preview-destination"></span></p>
+              <p>📅 <strong>Dates: </strong><span id="preview-dates"></span></p>
+              <p>✈️ <strong>Flight: </strong><span id="preview-flight"></span></p>
+              <p>🏨 <strong>Hotel: </strong> <span id="preview-hotel"></span></p>
+              <p>🎉 <strong>Activities: </strong></p>
+              <ul id="preview-activities"></ul>
+            </div>
+          </div>
         </div>
+        
 
         <!-- Make public on explore-->
         <label class="public-checkbox"> <input class="big-checkbox" type="checkbox" name="public" id="public" /> Make this trip public (show on Explore)? </label>
