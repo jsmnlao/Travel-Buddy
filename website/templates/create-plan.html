@@ -170,13 +170,14 @@
         <div class="card mb-4 p-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="mb-0">Activities</h4>
+
             <button class="btn btn-outline-primary">
               <i class="bi bi-stars"></i>
             </button>
           </div>
 
           <div id="activity-container">
-            <div class="activity-section">
+            <div class="card mb-3 p-3 activity-section">
               <div class="form-group">
                 <label for="activity_name[]">Activity Name</label>
                 <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods! " value="Eat dim sum" />
@@ -193,9 +194,12 @@
                 <label for="activity_description[]">Add Description (optional)</label>
                 <textarea class="form-control" name="activity_description[]" rows="3" placeholder="Describe activity...">Eat food!</textarea>
               </div>
+              <div class="d-flex justify-content-start mt-3 mb-3">
+                <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
+              </div>
             </div>
           </div>
-          <button type="button" class="btn btn-primary" id="addActivityBtn">Add Another Activity</button>
+          <button type="button" class="btn btn-primary" id="addActivityBtn">Add Activity</button>
         </div>
 
         <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
@@ -212,7 +216,6 @@
             </div>
           </div>
         </div>
-        
 
         <!-- Make public on explore-->
         <label class="public-checkbox"> <input class="big-checkbox" type="checkbox" name="public" id="public" /> Make this trip public (show on Explore)? </label>
@@ -260,31 +263,42 @@
             el.addEventListener('change', updatePreview);
           });
 
+          function attachDeleteHandlers() {
+            document.querySelectorAll('.delete-activity-btn').forEach((btn) => {
+              btn.onclick = function () {
+                this.closest('.activity-section').remove();
+              };
+            });
+          }
+
           document.getElementById('addActivityBtn').addEventListener('click', function () {
             const newActivity = document.createElement('div');
             newActivity.classList.add('activity-section');
 
             newActivity.innerHTML = `
-              <hr>
-              <div class="form-group">
-                <label for="activity_name">Activity Name</label>
-                <input type="text" name="activity_name[]" class="form-control" placeholder="e.g. Try local foods!" />
-              </div>
-              <div class="form-group">
-                <label for="activity_location">Location</label>
-                <input type="text" name="activity_location[]" class="form-control" placeholder="Address" />
-              </div>
-              <div class="form-group">
-                <label for="activity_date">Activity Date</label>
-                <input type="date" name="activity_date[]" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
-              </div>
-            `;
+              <div class="card mb-3 p-3 activity-section">
+                <div class="form-group">
+                  <label for="activity_name">Activity Name</label>
+                  <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods!" />
+                </div>
+                <div class="form-group">
+                  <label for="activity_location">Location</label>
+                  <input type="text" class="form-control" name="activity_location[]" placeholder="Address" />
+                </div>
+                <div class="form-group">
+                  <label for="activity_date">Activity Date</label>
+                  <input type="date" class="form-control" name="activity_date[]"/>
+                </div>
+                <div class="form-group">
+                  <label for="activity_description">Add Description (optional)</label>
+                  <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
+                </div>
+                <div class="d-flex justify-content-start mt-3 mb-3">
+                  <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
+                </div>
+              </div>`;
             document.getElementById('activity-container').appendChild(newActivity);
-
+            attachDeleteHandlers();
             newActivity.querySelectorAll('input, textarea').forEach((input) => {
               input.addEventListener('input', updatePreview);
               input.addEventListener('change', updatePreview);
@@ -292,6 +306,7 @@
             updatePreview();
           });
 
+          attachDeleteHandlers();
           window.addEventListener('DOMContentLoaded', updatePreview);
         </script>
 

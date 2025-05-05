@@ -178,14 +178,14 @@
                 <label>Add Description (optional)</label>
                 <textarea class="form-control" name="activity_description[]" rows="3">{{activity.description}}</textarea>
               </div>
-              <div class="text-end">
+              <div class="d-flex justify-content-start mt-3 mb-3">
                 <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
               </div>
             </div>
             {% endfor %}
           </div>
           <div class="text-center mt-3">
-            <button type="button" id="addActivityBtn" class="btn btn-outline-primary">Add Another Activity</button>
+            <button type="button" id="addActivityBtn" class="btn btn-outline-primary">Add Activity</button>
           </div>
         </div>
 
@@ -224,24 +224,27 @@
             const newActivity = document.createElement('div');
             newActivity.classList.add('activity-section');
 
-            newActivity.innerHTML = `<hr> <div class="form-group">
-                <label for="activity_name">Activity Name</label>
-                <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods!" />
-              </div>
-              <div class="form-group">
-                <label for="activity_location">Location</label>
-                <input type="text" class="form-control" name="activity_location[]" placeholder="Address" />
-              </div>
-              <div class="form-group">
-                <label for="activity_date">Activity Date</label>
-                <input type="date" class="form-control" name="activity_date[]"/>
-              </div>
-              <div class="form-group">
-                <label for="activity_description">Add Description (optional)</label>
-                <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
-              </div>
-              <div class="text-end">
-                <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
+            newActivity.innerHTML = `
+              <div class="card mb-3 p-3 activity-section">
+                <div class="form-group">
+                  <label for="activity_name">Activity Name</label>
+                  <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods!" />
+                </div>
+                <div class="form-group">
+                  <label for="activity_location">Location</label>
+                  <input type="text" class="form-control" name="activity_location[]" placeholder="Address" />
+                </div>
+                <div class="form-group">
+                  <label for="activity_date">Activity Date</label>
+                  <input type="date" class="form-control" name="activity_date[]"/>
+                </div>
+                <div class="form-group">
+                  <label for="activity_description">Add Description (optional)</label>
+                  <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
+                </div>
+                <div class="d-flex justify-content-start mt-3 mb-3">
+                  <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
+                </div>
               </div>`;
             document.getElementById('activity-container').appendChild(newActivity);
             attachDeleteHandlers();
