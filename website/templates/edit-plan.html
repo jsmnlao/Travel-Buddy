@@ -161,7 +161,7 @@
 
           <div id="activity-container">
             {% for activity in activities %}
-            <div class="card mb-3 p-3">
+            <div class="card mb-3 p-3 activity-section" data-id="{{ activity.id }}">
               <div class="form-group">
                 <label>Activity Name</label>
                 <input type="text" class="form-control" name="activity_name[]" value="{{activity.activity_name}}" />
@@ -178,6 +178,9 @@
                 <label>Add Description (optional)</label>
                 <textarea class="form-control" name="activity_description[]" rows="3">{{activity.description}}</textarea>
               </div>
+              <div class="text-end">
+                <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
+              </div>
             </div>
             {% endfor %}
           </div>
@@ -187,6 +190,36 @@
         </div>
 
         <script>
+          function attachDeleteHandlers() {
+            document.querySelectorAll('.delete-activity-btn').forEach((btn) => {
+              btn.onclick = function () {
+                const activityCard = this.closest('.activity-section');
+                const activityId = activityCard.getAttribute('data-id');
+
+                if (!activityId) {
+                  activityCard.remove();
+                  return;
+                }
+
+                if (confirm('Are you sure you want to delete this activity?')) {
+                  fetch(`/delete-activity/${activityId}`, {
+                    method: 'POST'
+                  })
+                    .then((response) => {
+                      if (response.ok) {
+                        activityCard.remove();
+                      } else {
+                        alert('Failed to delete activity.');
+                      }
+                    })
+                    .catch((error) => {
+                      console.error('Error:', error);
+                      alert('An error occurred while deleting.');
+                    });
+                }
+              };
+            });
+          }
           document.getElementById('addActivityBtn').addEventListener('click', function () {
             const newActivity = document.createElement('div');
             newActivity.classList.add('activity-section');
@@ -206,9 +239,14 @@
               <div class="form-group">
                 <label for="activity_description">Add Description (optional)</label>
                 <textarea class="form-control" rows="3" name="activity_description[]" placeholder="Describe activity..."></textarea>
+              </div>
+              <div class="text-end">
+                <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
               </div>`;
             document.getElementById('activity-container').appendChild(newActivity);
+            attachDeleteHandlers();
           });
+          attachDeleteHandlers();
         </script>
 
         <!-- Make public on explore-->
