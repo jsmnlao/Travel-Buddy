@@ -329,9 +329,9 @@ def generate_itinerary():
         Return ONLY a valid JSON array.  
         Each item in the array should include:
 
-        - "activity_name": A short name for the activity  
+        - "name": A short name for the activity  
         - "address": The location of the activity (e.g. venue, neighborhood, or landmark)  
-        - "activity_date": A real date in MM-DD-YYYY format (one per day of the trip)  
+        - "date": A real date in YYYY-MM-DD format (one per day of the trip)  
         - "description": A sentence or two about the activity
 
         Do not include any explanation or intro — only return the JSON array.
@@ -340,9 +340,9 @@ def generate_itinerary():
 
         [
             {{
-                "activity_name": "Visit Tokyo Tower",
+                "name": "Visit Tokyo Tower",
                 "address": "Minato City, Tokyo",
-                "activity_date": "2025-06-01",
+                "date": "2025-05-06",
                 "description": "Enjoy panoramic views of the city from the iconic Tokyo Tower."
             }},
             ...

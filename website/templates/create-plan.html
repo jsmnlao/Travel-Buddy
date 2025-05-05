@@ -181,7 +181,7 @@
           </div>
 
           <div id="activity-container">
-            <div class="card mb-3 p-3 activity-section">
+            <div class="card mt-4 mb-3 p-3 activity-section">
               <div class="form-group">
                 <label for="activity_name[]">Activity Name</label>
                 <input type="text" class="form-control" name="activity_name[]" placeholder="e.g. Try local foods! " />
@@ -209,7 +209,7 @@
 
       <br/>
 
-        <!-- Trip Summary (NEEDS TO CONNECT WITH DATABASE)-->
+        <!-- Trip Summary -->
         <div class="card mb-4 p-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div id="trip-overview">
@@ -227,6 +227,31 @@
         <!-- Make public on explore-->
         <label class="public-checkbox"> <input class="big-checkbox" type="checkbox" name="public" id="public" /> Make this trip public (show on Explore)? </label>
 
+        <!-- ******************* SCRIPTS ******************* -->
+
+        <script>
+          function attachDeleteHandlers() {
+            document.querySelectorAll('.delete-activity-btn').forEach((btn) => {
+              btn.onclick = function () {
+                this.closest('.activity-section').remove();
+                updatePreview();
+              };
+            });
+          }
+
+          function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return isNaN(date)
+              ? ""
+              : date.toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              });
+          }
+        </script>
+
         <!-- Dynamically Update the Bottom Overview Section -->
         <script>
           function updatePreview() {
@@ -234,7 +259,8 @@
 
             const start = document.getElementById('startDate').value;
             const end = document.getElementById('endDate').value;
-            document.getElementById('preview-dates').textContent = start && end ? `${start} to ${end}` : '';
+            document.getElementById('preview-dates').textContent = start && end ? `${formatDate(start)} to ${formatDate(end)}` : '';
+
 
             const airline = document.getElementById('airline').value;
             const flightNum = document.getElementById('flight_number').value;
@@ -256,8 +282,14 @@
               const desc = activity.querySelector('textarea[name="activity_description[]"]').value;
 
               if (name && loc && date) {
-                const li = document.createElement('li');
-                li.textContent = desc ? `${name} at ${loc} on ${date} — ${desc}` : `${name} at ${loc} on ${date}`;
+                  const li = document.createElement('li');
+                  li.innerHTML = `
+                  <strong>${name}</strong><br/>
+                  - <em>${loc}</em><br/>
+                  - ${formatDate(date)}<br/>
+                  ${desc ? `- ${desc}` : ''}
+                `;
+                li.classList.add('mb-3');
                 previewActivities.appendChild(li);
               }
             });
@@ -268,14 +300,6 @@
             el.addEventListener('input', updatePreview);
             el.addEventListener('change', updatePreview);
           });
-
-          function attachDeleteHandlers() {
-            document.querySelectorAll('.delete-activity-btn').forEach((btn) => {
-              btn.onclick = function () {
-                this.closest('.activity-section').remove();
-              };
-            });
-          }
 
           document.getElementById('addActivityBtn').addEventListener('click', function () {
             const newActivity = document.createElement('div');
@@ -378,6 +402,10 @@
 
     <!-- Handle the Generate Itinerary Button -->
     <script>
+
+      const addedActivities = new Set();
+
+
       document.getElementById("generateItineraryBtn").addEventListener("click", async function () {
         const destination = document.getElementById("destination").value.trim();
         const startDate = document.getElementById("startDate").value.trim();
@@ -385,8 +413,14 @@
         const travelers = document.getElementById("travelers").value.trim();
         const budget = document.getElementById("budget").value.trim();
     
-        if (!destination || !startDate || !endDate || !travelers || !budget) {
-          alert("Please fill in destination, dates, number of travelers, and budget before generating an itinerary.");
+        if (
+          !destination ||
+          !startDate ||
+          !endDate ||
+          travelers === "" || Number(travelers) <= 0 ||
+          budget === "" || Number(budget) <= 0
+        ) {
+          alert("Please fill in the Trip Details Section before generating an itinerary.");
           return;
         }
     
@@ -413,33 +447,59 @@
     
           const result = await response.json();
           const activities = result.activities;
+
+          //console.log("AI result:", activities);
     
           const container = document.getElementById("activity-container");
     
           activities.forEach(act => {
+            const name = act.name?.trim().toLowerCase() || "";
+            const rawAddress = act.address?.trim().toLowerCase() || "";
+            const location = rawAddress.split(",")[0];
+
+            const uniqueKey = `${name}_${location}`;
+
+            if (addedActivities.has(uniqueKey)) {
+              console.log("Skipping duplicate activity:", uniqueKey);
+              return;
+            }
+
+            addedActivities.add(uniqueKey);
+
             const section = document.createElement("div");
-            section.classList.add("activity-section");
             section.innerHTML = `
-              <hr>
+              <div class="card mt-4 mb-3 p-3 activity-section">
               <div class="form-group">
                 <label>Activity Name</label>
                 <input type="text" name="activity_name[]" class="form-control" value="${act.name || ''}" />
               </div>
               <div class="form-group">
                 <label>Location</label>
-                <input type="text" name="activity_location[]" class="form-control" value="${act.location || ''}" />
+                <input type="text" name="activity_location[]" class="form-control" value="${act.address || ''}" />
               </div>
               <div class="form-group">
                 <label>Activity Date</label>
-                <input type="text" name="activity_date[]" class="form-control" value="${act.date || ''}" />
+                <input type="date" name="activity_date[]" class="form-control" value="${act.date || ''}" />
               </div>
               <div class="form-group">
                 <label>Description</label>
                 <textarea name="activity_description[]" class="form-control" rows="3">${act.description || ''}</textarea>
               </div>
+              <div class="d-flex justify-content-start mt-4 mb-2">
+                <button type="button" class="btn btn-danger btn-sm delete-activity-btn">Delete Activity</button>
+              </div>
+            </div>
             `;
             container.appendChild(section);
+
+            attachDeleteHandlers();
+
+            section.querySelectorAll('input, textarea').forEach((input) => {
+            input.addEventListener('input', updatePreview);
+            input.addEventListener('change', updatePreview);
           });
+
+        });
     
           updatePreview();
         } catch (err) {
@@ -448,7 +508,6 @@
         }
       });
     </script>
-    
 
     <!-- Footer -->
     <footer class="footer mt-auto">

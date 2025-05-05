@@ -40,11 +40,18 @@ Travel Buddy is designed to tailor to each traveler’s needs by offering users 
 
 1. Clone the reposity with `git clone` and the web URL found in the `<> Code` drop down above.
 2. Download and install Python on your device. You can follow the instructions [here](https://www.python.org/downloads/).
-3. Navigate to the project through your CLI
+3. Open the project in an IDE or create a .env file inside the project directory.
+   In this file, you will need to get the API Key to add LLaMA. Your .env file should look something like this:
+
+```
+OPENROUTER_API_KEY=your_api_key
+```
+
 4. Get your API Key from [here](https://openrouter.ai/)
-5. Start the virtual environment by typing `source env/bin/activate` for Mac or `env\Scripts\activate.bat` for Windows (CMD) or `env\Scripts\Activate.ps1` for Windows (PowerShell)
-6. Install all necessary dependencies with `pip install -r requirements.txt`
-7. Start the project with `flask run --port 5050`
-8. Following the instructions on your CLI, open the website through the port given
+5. Navigate to the project through your CLI
+6. Start the virtual environment by typing `source env/bin/activate` for Mac or `env\Scripts\activate.bat` for Windows (CMD) or `env\Scripts\Activate.ps1` for Windows (PowerShell)
+7. Install all necessary dependencies with `pip install -r requirements.txt`
+8. Start the project with `flask run --port 5050`
+9. Following the instructions on your CLI, open the website through the port given
 
 To deactivate the environment use `deactivate`.
