@@ -3,25 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 import os
 from flask_login import LoginManager
-from llama_cpp import Llama
 
 db = SQLAlchemy()
 DB_NAME = "travelbuddy.db"
 
-llm = None
-
 def create_app():
-    global llm
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'asdfa asdfa'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config['DATABASE'] = os.path.join(app.instance_path, DB_NAME)
     db.init_app(app)
-
-    print("Loading model...")
-    llm = Llama(model_path="./models/llama-2-7b.Q4_K_M.gguf", n_ctx=512)
-    print("Model loaded!")
-
 
     from .views import views
     from .auth import auth

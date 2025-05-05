@@ -55,7 +55,7 @@
   </head>
   <body class="min-vh-100 d-flex flex-column">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-      <a class="navbar-brand">
+      <a class="navbar-brand" href="/home">
         <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top logo-nav" />
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
@@ -174,6 +174,10 @@
                   Generate Itinerary with LLaMA
               </button>
             </div>
+          </div>
+
+          <div class="mb-3">
+            <i>If using LLaMA to generate your itinerary, please wait a couple of seconds...</i>
           </div>
 
           <div id="activity-container">
@@ -360,94 +364,79 @@
       </script>
     </section>
 
-    <!-- Handles the generate itinterary with ai button -->
+    <!-- Handle the Generate Itinerary Button -->
     <script>
       document.getElementById("generateItineraryBtn").addEventListener("click", async function () {
-        // trip info from form
-        const data = {
-          destination: document.getElementById("destination").value,
-          start_date: document.getElementById("startDate").value,
-          end_date: document.getElementById("endDate").value,
-          travelers: document.getElementById("travelers").value,
-          budget: document.getElementById("budget").value
-        };
-
-        // input validation
-        /*
-        const requiredFields = [destination, start_date, end_date, travelers, budget]
-        let isValid = true;
-
-        requiredFields.forEach(function (id) {
-            const input = document.getElementById(id);
-            const label = document.querySelector(`label[for="${id}"]`);
-            print('label: ', input, 'input: ', input);
-
-            if (input && label) {
-              if (!input.value.trim()) {
-                label.classList.add('bold-label');
-                input.classList.add('input-warning');
-                isValid = false;
-              } else {
-                label.classList.remove('bold-label');
-                input.classList.remove('input-warning');
-              }
-            }
-          });
-
-          if (!isValid) {
-            e.preventDefault();
-            alert('Please fill in all required fields');
-            return;
-          }*/
+        const destination = document.getElementById("destination").value.trim();
+        const startDate = document.getElementById("startDate").value.trim();
+        const endDate = document.getElementById("endDate").value.trim();
+        const travelers = document.getElementById("travelers").value.trim();
+        const budget = document.getElementById("budget").value.trim();
     
-        // send data to backend
-        const response = await fetch("/generate-itinerary", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-    
-        const itinerary = await response.json();
-        const container = document.getElementById("activity-container");
-
-        const MAX_ACTIVITIES_TO_ADD = 10;
-        let added = 0;
-    
-        // append each new activity
-        for (const act of itinerary.activities) {
-          if (added >= MAX_ACTIVITIES_TO_ADD) break;
-
-          const section = document.createElement("div");
-          section.classList.add("activity-section");
-          section.innerHTML = `
-            <hr>
-            <div class="form-group">
-              <label>Activity Name</label>
-              <input type="text" name="activity_name[]" class="form-control" value="${act.name}" />
-            </div>
-            <div class="form-group">
-              <label>Location</label>
-              <input type="text" name="activity_location[]" class="form-control" value="${act.location}" />
-             </div>
-            <div class="form-group">
-              <label>Activity Date</label>
-              <input type="date" name="activity_date[]" class="form-control" value="${act.date}" />
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea name="activity_description[]" class="form-control" rows="3">${act.description}</textarea>
-            </div>
-          `;
-          container.appendChild(section);
-          added++;
+        if (!destination || !startDate || !endDate || !travelers || !budget) {
+          alert("Please fill in destination, dates, number of travelers, and budget before generating an itinerary.");
+          return;
         }
-
-        updatePreview();
+    
+        const data = {
+          destination,
+          start_date: startDate,
+          end_date: endDate,
+          travelers,
+          budget
+        };
+    
+        try {
+          const response = await fetch("/generate-itinerary", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+    
+          if (!response.ok) {
+            const error = await response.json();
+            alert("Error: " + error.error);
+            return;
+          }
+    
+          const result = await response.json();
+          const activities = result.activities;
+    
+          const container = document.getElementById("activity-container");
+    
+          activities.forEach(act => {
+            const section = document.createElement("div");
+            section.classList.add("activity-section");
+            section.innerHTML = `
+              <hr>
+              <div class="form-group">
+                <label>Activity Name</label>
+                <input type="text" name="activity_name[]" class="form-control" value="${act.name || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="activity_location[]" class="form-control" value="${act.location || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Activity Date</label>
+                <input type="text" name="activity_date[]" class="form-control" value="${act.date || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea name="activity_description[]" class="form-control" rows="3">${act.description || ''}</textarea>
+              </div>
+            `;
+            container.appendChild(section);
+          });
+    
+          updatePreview();
+        } catch (err) {
+          console.error(err);
+          alert("Something went wrong while contacting the AI.");
+        }
       });
     </script>
-        
+    
 
     <!-- Footer -->
     <footer class="footer mt-auto">

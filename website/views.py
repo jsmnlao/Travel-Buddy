@@ -5,14 +5,20 @@ import sqlite3
 from datetime import datetime
 from flask import flash, url_for
 from . import db
-from llama_service import generate_itinerary_prompt
+from dotenv import load_dotenv
+import os
+import requests
+
+load_dotenv()
 
 # views.py are end points for the url to navigate around the webpage
 
 views = Blueprint('views', __name__)
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 @views.route('/')
 def landing():
+    # print("API Key loaded:", os.getenv("OPENROUTER_API_KEY"))
     return render_template("landing.html")
 
 @views.route('/home')
@@ -287,7 +293,74 @@ def generate_itinerary():
     travelers = data.get('travelers')
     budget = data.get('budget')
 
-    # Call llama_service.py with generate_itinerary
-    itinerary = generate_itinerary_prompt(destination, start_date, end_date, budget, travelers)
+    if not all([destination, start_date, end_date, travelers, budget]):
+        return jsonify({ "error": "All fields are required." }), 400
 
-    return jsonify({"activities": itinerary})
+    try:
+        days = (datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days + 1
+    except:
+        return jsonify({ "error": "Invalid date format." }), 400
+
+    prompt = f"""
+        You are a travel planner.
+
+        Create a {days}-day travel itinerary for a trip to {destination}.
+        There are {travelers} traveler(s) and a total budget of ${budget}.
+
+        Return ONLY a valid JSON array.  
+        Each item in the array should include:
+
+        - "activity_name": A short name for the activity  
+        - "address": The location of the activity (e.g. venue, neighborhood, or landmark)  
+        - "activity_date": A real date in MM-DD-YYYY format (one per day of the trip)  
+        - "description": A sentence or two about the activity
+
+        Do not include any explanation or intro — only return the JSON array.
+
+        Example:
+
+        [
+            {{
+                "activity_name": "Visit Tokyo Tower",
+                "address": "Minato City, Tokyo",
+                "activity_date": "2025-06-01",
+                "description": "Enjoy panoramic views of the city from the iconic Tokyo Tower."
+            }},
+            ...
+        ]
+    """
+
+    try:
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "meta-llama/llama-3-8b-instruct",
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": 800,
+                "temperature": 0.7
+            }
+        )
+
+        result = response.json()
+        content = result["choices"][0]["message"]["content"]
+
+        # Try to parse the returned string as JSON (the model outputs JSON-like text)
+        import json
+        activities = json.loads(content)
+
+        return jsonify({ "activities": activities })
+
+    except Exception as e:
+        print("LLaMA API error:", e)
+        return jsonify({ "error": "Failed to generate itinerary." }), 500
+    
+
+# Testing API endpoint
+#@views.route('/test', methods=['POST'])
+#def test():
+#    print("Got a POST request!")
+#    return jsonify({"message": "It works!"})
