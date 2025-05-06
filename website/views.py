@@ -26,6 +26,10 @@ def landing():
 def home():
     trips = Trip.query.filter_by(user_id=current_user.id).all()
     favorites = db.session.query(Trip).join(Favorites).filter(Favorites.user_id == current_user.id).all()
+    favorites_id = {fav.trip_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
+    public_trips = Trip.query.filter_by(public=True).all()     
+    for trip in public_trips:
+        trip.liked = trip.id in favorites_id
     return render_template("home.html", user=current_user, trips=trips, favorites=favorites)
 
 
@@ -127,7 +131,7 @@ def like_trip(trip_id):
     
 @views.route('/explore')
 def explore():
-    public_trips = Trip.query.filter_by(public=True).all()      # retrieve Public trips
+    public_trips = Trip.query.filter_by(public=True).all()     
     favorites = {fav.trip_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
     for trip in public_trips:
         trip.liked = trip.id in favorites
