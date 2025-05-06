@@ -79,17 +79,12 @@
       </div>
     </section>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-    {% endif %}
-  {% endwith %}
-  
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %} {% endif %} {% endwith %}
 
     <section>
       <form id="form-container" method="POST" action="{{ url_for('views.save_plan') }}" class="container my-5">
@@ -99,7 +94,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="destination">Destination</label>
-              <input type="text" class="form-control" name="destination" id="destination" placeholder="e.g. Tokyo, Japan"/>
+              <input type="text" class="form-control" name="destination" id="destination" placeholder="e.g. Tokyo, Japan" />
             </div>
             <div class="form-group col-md-3">
               <label for="startDate">Start Date</label>
@@ -129,11 +124,11 @@
           </div>
           <div class="form-group">
             <label for="airline">Airline Info</label>
-            <input type="text" class="form-control" name="airline" id="airline" placeholder="Airline Name"/>
+            <input type="text" class="form-control" name="airline" id="airline" placeholder="Airline Name" />
           </div>
           <div class="form-group">
             <label for="flight_number">Flight Number</label>
-            <input type="text" class="form-control" name="flight_number" id="flight_number" placeholder="Flight #"/>
+            <input type="text" class="form-control" name="flight_number" id="flight_number" placeholder="Flight #" />
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
@@ -171,7 +166,7 @@
               <!-- Generate Itinerary Button -->
               <button type="button" id="generateItineraryBtn" class="btn btn-outline-primary mt-3 mb-3">
                 <i class="bi bi-stars"></i>
-                  Generate Itinerary with LLaMA
+                Generate Itinerary with LLaMA
               </button>
             </div>
           </div>
@@ -188,7 +183,7 @@
               </div>
               <div class="form-group">
                 <label for="activity_location[]">Location</label>
-                <input type="text" class="form-control" name="activity_location[]" placeholder="Address"/>
+                <input type="text" class="form-control" name="activity_location[]" placeholder="Address" />
               </div>
               <div class="form-group">
                 <label for="activity_date[]">Activity Date</label>
@@ -206,8 +201,7 @@
           <button type="button" class="btn btn-primary" id="addActivityBtn">Add Activity</button>
         </div>
 
-
-      <br/>
+        <br />
 
         <!-- Trip Summary -->
         <div class="card mb-4 p-4">
@@ -242,13 +236,13 @@
           function formatDate(dateStr) {
             const date = new Date(dateStr);
             return isNaN(date)
-              ? ""
-              : date.toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              });
+              ? ''
+              : date.toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                });
           }
         </script>
 
@@ -260,7 +254,6 @@
             const start = document.getElementById('startDate').value;
             const end = document.getElementById('endDate').value;
             document.getElementById('preview-dates').textContent = start && end ? `${formatDate(start)} to ${formatDate(end)}` : '';
-
 
             const airline = document.getElementById('airline').value;
             const flightNum = document.getElementById('flight_number').value;
@@ -282,8 +275,8 @@
               const desc = activity.querySelector('textarea[name="activity_description[]"]').value;
 
               if (name && loc && date) {
-                  const li = document.createElement('li');
-                  li.innerHTML = `
+                const li = document.createElement('li');
+                li.innerHTML = `
                   <strong>${name}</strong><br/>
                   - <em>${loc}</em><br/>
                   - ${formatDate(date)}<br/>
@@ -402,28 +395,20 @@
 
     <!-- Handle the Generate Itinerary Button -->
     <script>
-
       const addedActivities = new Set();
 
+      document.getElementById('generateItineraryBtn').addEventListener('click', async function () {
+        const destination = document.getElementById('destination').value.trim();
+        const startDate = document.getElementById('startDate').value.trim();
+        const endDate = document.getElementById('endDate').value.trim();
+        const travelers = document.getElementById('travelers').value.trim();
+        const budget = document.getElementById('budget').value.trim();
 
-      document.getElementById("generateItineraryBtn").addEventListener("click", async function () {
-        const destination = document.getElementById("destination").value.trim();
-        const startDate = document.getElementById("startDate").value.trim();
-        const endDate = document.getElementById("endDate").value.trim();
-        const travelers = document.getElementById("travelers").value.trim();
-        const budget = document.getElementById("budget").value.trim();
-    
-        if (
-          !destination ||
-          !startDate ||
-          !endDate ||
-          travelers === "" || Number(travelers) <= 0 ||
-          budget === "" || Number(budget) <= 0
-        ) {
-          alert("Please fill in the Trip Details Section before generating an itinerary.");
+        if (!destination || !startDate || !endDate || travelers === '' || Number(travelers) <= 0 || budget === '' || Number(budget) <= 0) {
+          alert('Please fill in the Trip Details Section before generating an itinerary.');
           return;
         }
-    
+
         const data = {
           destination,
           start_date: startDate,
@@ -431,42 +416,42 @@
           travelers,
           budget
         };
-    
+
         try {
-          const response = await fetch("/generate-itinerary", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+          const response = await fetch('/generate-itinerary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
           });
-    
+
           if (!response.ok) {
             const error = await response.json();
-            alert("Error: " + error.error);
+            alert('Error: ' + error.error);
             return;
           }
-    
+
           const result = await response.json();
           const activities = result.activities;
 
           //console.log("AI result:", activities);
-    
-          const container = document.getElementById("activity-container");
-    
-          activities.forEach(act => {
-            const name = act.name?.trim().toLowerCase() || "";
-            const rawAddress = act.address?.trim().toLowerCase() || "";
-            const location = rawAddress.split(",")[0];
+
+          const container = document.getElementById('activity-container');
+
+          activities.forEach((act) => {
+            const name = act.name?.trim().toLowerCase() || '';
+            const rawAddress = act.address?.trim().toLowerCase() || '';
+            const location = rawAddress.split(',')[0];
 
             const uniqueKey = `${name}_${location}`;
 
             if (addedActivities.has(uniqueKey)) {
-              console.log("Skipping duplicate activity:", uniqueKey);
+              console.log('Skipping duplicate activity:', uniqueKey);
               return;
             }
 
             addedActivities.add(uniqueKey);
 
-            const section = document.createElement("div");
+            const section = document.createElement('div');
             section.innerHTML = `
               <div class="card mt-4 mb-3 p-3 activity-section">
               <div class="form-group">
@@ -495,16 +480,15 @@
             attachDeleteHandlers();
 
             section.querySelectorAll('input, textarea').forEach((input) => {
-            input.addEventListener('input', updatePreview);
-            input.addEventListener('change', updatePreview);
+              input.addEventListener('input', updatePreview);
+              input.addEventListener('change', updatePreview);
+            });
           });
 
-        });
-    
           updatePreview();
         } catch (err) {
           console.error(err);
-          alert("Something went wrong while contacting the AI.");
+          alert('Something went wrong while contacting the AI.');
         }
       });
     </script>
