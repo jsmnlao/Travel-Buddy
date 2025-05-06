@@ -256,9 +256,6 @@
       function toggleStar(button) {
         const icon = button.querySelector('i');
         const trip_id = button.getAttribute('data-trip-id');
-        // console.log('Trip ID:', trip_id);
-        // console.log();
-        // const trip_id = button.dataset.tripId;
 
         const isStarred = icon.classList.contains('bi-star-fill');
         icon.classList.toggle('bi-star');

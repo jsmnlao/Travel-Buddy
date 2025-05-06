@@ -224,7 +224,6 @@ def save_plan():
         db.session.flush()
 
         # Create and insert Activities
-
         for name, location, date, description in zip(activity_names, activity_locations, activity_dates, activity_descriptions):
             new_activity = Activity(
                 activity_name=name,
@@ -350,24 +349,7 @@ def toggle_star(trip_id):
     except Exception as e:
         print(f"Error toggling star: {e}")
         return jsonify(success=False, message="Internal server error"), 500
-    
-# def like_trip(trip_id):
-#     trip = Trip.query.get_or_404(trip_id)
-#     if trip.user_id != current_user.id:
-#         abort(403)
-#     favorite = Favorites.query.filter_by(user_id=current_user.id, trip_id=trip_id).first()
 
-#     if favorite:
-#         db.session.delete(favorite)
-#         db.session.commit()
-#         liked = False
-#     else:
-#         new_fav = Favorites(user_id=current_user.id, trip_id=trip_id)
-#         db.session.add(new_fav)
-#         db.session.commit()
-#         liked = True
-
-#     return jsonify({'liked': liked})
 
 @views.route('/generate-itinerary', methods=['POST'])
 def generate_itinerary():
@@ -436,7 +418,6 @@ def generate_itinerary():
         result = response.json()
         content = result["choices"][0]["message"]["content"]
 
-        # Try to parse the returned string as JSON (the model outputs JSON-like text)
         import json
         activities = json.loads(content)
 
