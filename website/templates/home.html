@@ -97,7 +97,7 @@
             <a class="nav-link ms-3" href="/explore">Explore</a>
           </li>
         </ul>
-
+        <br/>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <a class="btn btn-outline-primary ms-3 me-3" id="logout" href="/" role="button">Logout</a>
@@ -134,6 +134,9 @@
             <p class="fs-5">Destination: <strong>{{ trip.destination }}</strong></p>
           </div>
           <div class="ms-3 d-flex flex-column align-items-end" onclick="event.stopPropagation();">
+            <button type="button" class="btn p-0 border-0 bg-transparent mb-3" onclick="toggleStar(this)" data-trip-id="{{ trip.id }}">
+                <i class="bi {% if trip.starred %}bi-star-fill{% else %}bi-star{% endif %}" style="font-size: 1.9rem; color: #ffc107;"></i>
+            </button>
             <a href="{{ url_for('views.edit_plan', trip_id=trip.id) }}" class="btn btn-sm btn-outline-primary mb-2"> <i class="bi bi-pencil"></i> Edit </a>
             <button type="submit" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-{{ trip.id }}"><i class="bi bi-trash"></i> Delete</button>
           </div>
@@ -171,8 +174,11 @@
           </button>
         </form>
       </div>
+
+      <br/>
+      <br/>
       {% endif %} {% if favorites %}
-      <h3 class="mb-3">Favorited Trips</h3>
+      <h3 class="mt-4 mb-3">Inspiration</h3>
       <div class="row">
         {% for trip in favorites %}
         <div class="col-md-4 mb-3">
@@ -191,8 +197,10 @@
         {% endfor %}
       </div>
       {% else %}
+      <br/>
+      <br/>
       <div>
-        <h2 class="mb-3">Favorited Trips</h2>
+        <h2 class="mt-4 mb-3">Inspiration</h2>
         <div class="card mb-4 p-4 text-center text-muted">
           <p>No favorite trips yet.</p>
         </div>
@@ -211,6 +219,44 @@
         <p>© 2025 Travel Buddy. All rights reserved.</p>
       </div>
     </footer>
+
+    <!-- if user presses star button -->
+    <script>
+      function toggleStar(button) {
+        const icon = button.querySelector('i');
+        const tripId = button.getAttribute('data-trip-id');
+    
+        // Optimistically toggle UI
+        const isStarred = icon.classList.contains('bi-star-fill');
+        icon.classList.toggle('bi-star');
+        icon.classList.toggle('bi-star-fill');
+    
+        // Send update to backend
+        fetch(`/toggle-star/${tripId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ starred: !isStarred }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            icon.classList.toggle('bi-star');
+            icon.classList.toggle('bi-star-fill');
+            alert('Failed to update favorite status.');
+          }
+        })
+        .catch(() => {
+          console.error('Server error:', err);
+          icon.classList.toggle('bi-star');
+          icon.classList.toggle('bi-star-fill');
+          alert('Server error.');
+        });
+      }
+    </script>
+    
+    
 
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

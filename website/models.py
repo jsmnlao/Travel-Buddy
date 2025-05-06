@@ -19,6 +19,7 @@ class Trip(db.Model):
     travelers = db.Column(db.Integer)
     budget = db.Column(db.Integer)
     public = db.Column(db.Boolean, default=False)  # for sharing on explore page (False = private, True = public)
+    starred = db.Column(db.Boolean, default=False)
     
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))           # each trip belongs to a user
     flights = db.relationship('Flight', backref='trip', cascade="all, delete-orphan")
