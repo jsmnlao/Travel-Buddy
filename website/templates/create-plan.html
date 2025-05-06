@@ -66,7 +66,7 @@
           <a class="nav-item nav-link mr-3" id="home" href="/home">Home</a>
           <a class="nav-item nav-link" id="explore" href="/explore">Explore</a>
         </div>
-        <br/>
+        <br />
         <div class="ml-auto">
           <a class="btn btn-outline-primary" id="logout" href="/" role="button">Logout</a>
         </div>
@@ -109,7 +109,7 @@
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="travelers">Number of Travelers</label>
-              <input type="number" class="form-control" name="travelers" id="travelers" placeholder="1" min="1" />
+              <input type="number" class="form-control" name="travelers" id="travelers" placeholder="e.g. 1" min="1" />
             </div>
             <div class="form-group col-md-4">
               <label for="budget">Budget ($)</label>
@@ -360,11 +360,14 @@
           const hotel_name = document.getElementById('hotel_name').value.trim();
           const hotel_location = document.getElementById('hotel_location').value.trim();
 
-          const actvity_names = document.getElementById('activity_names').value.trim();
-          const actvity_locations = document.getElementById('activity_locations').value.trim();
-          const actvity_dates = document.getElementById('activity_dates').value.trim();
+          const activityNames = document.querySelectorAll('input[name="activity_name[]"]');
+          const activityLocations = document.querySelectorAll('input[name="activity_location[]"]');
+          const activityDates = document.querySelectorAll('input[name="activity_date[]"]');
 
-          // const inputs = [destination, start_date, end_date, num_travelers, budget, airline, flight_number, depart_date, depart_time, hotel_name, hotel_location];
+          // const actvity_names = document.getElementById('activity_names[]').value.trim();
+          // const actvity_locations = document.getElementById('activity_locations[]').value.trim();
+          // const actvity_dates = document.getElementById('activity_dates[]').value.trim();
+
           const requiredFields = ['destination', 'startDate', 'endDate', 'travelers', 'budget', 'airline', 'flight_number', 'depart_date', 'depart_time', 'hotel_name', 'hotel_location'];
 
           let isValid = true;
@@ -372,7 +375,7 @@
           requiredFields.forEach(function (id) {
             const input = document.getElementById(id);
             const label = document.querySelector(`label[for="${id}"]`);
-            print('label: ', input, 'input: ', input);
+            console.log('label: ', input, 'input: ', input);
 
             if (input && label) {
               if (!input.value.trim()) {
@@ -404,9 +407,11 @@
         const endDate = document.getElementById('endDate').value.trim();
         const travelers = document.getElementById('travelers').value.trim();
         const budget = document.getElementById('budget').value.trim();
+        print(destination, startDate, endDate, travelers, budget);
 
         if (!destination || !startDate || !endDate || travelers === '' || Number(travelers) <= 0 || budget === '' || Number(budget) <= 0) {
           alert('Please fill in the Trip Details Section before generating an itinerary.');
+          alert(destination, startDate, endDate, travelers, budget);
           return;
         }
 
