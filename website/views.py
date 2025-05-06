@@ -24,7 +24,7 @@ def landing():
 @views.route('/home')
 @login_required
 def home():
-    trips = Trip.query.filter_by(user_id=current_user.id).all()
+    trips = Trip.query.filter_by(user_id=current_user.id).order_by(Trip.starred.desc(), Trip.start_date.asc()).all()
     favorites = db.session.query(Trip).join(Favorites).filter(Favorites.user_id == current_user.id).all()
     favorites_id = {fav.trip_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
     public_trips = Trip.query.filter_by(public=True).all()     
@@ -328,6 +328,31 @@ def update_plan():
     
     flash('Plan updated successfully!', category='success')
     return redirect('/home')
+
+@views.route('/toggle-star/<int:tripId>', methods=['POST'])
+def toggle_star(trip_id):
+    try:
+        data = request.get_json()
+        starred = data.get('starred')
+
+        if starred is None:
+            return jsonify(success=False, message="Missing 'starred' value"), 400
+
+        trip = Trip.query.get_or_404(trip_id)
+
+        # if current user owns this trip
+        if trip.user_id != current_user.id:
+            return jsonify(success=False, message="Unauthorized"), 403
+
+        trip.starred = starred
+        db.session.commit()
+
+        return jsonify(success=True)
+    
+    except Exception as e:
+        print(f"Error toggling star: {e}")
+        return jsonify(success=False, message="Internal server error"), 500
+    
 
 
 @views.route('/generate-itinerary', methods=['POST'])
