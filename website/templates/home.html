@@ -215,11 +215,10 @@
       document.querySelectorAll('.like-btn').forEach((button) => {
         button.addEventListener('click', function (event) {
           event.preventDefault();
-          const tripId = this.dataset.tripId;
+          const trip_id = this.dataset.tripId;
           const icon = this.querySelector('i');
 
-          // Send request to toggle favorite
-          fetch(`/like-trip/${tripId}`, {
+          fetch(`/like-trip/${trip_id}`, {
             method: 'POST',
             credentials: 'same-origin'
           })
@@ -256,15 +255,16 @@
     <script>
       function toggleStar(button) {
         const icon = button.querySelector('i');
-        const tripId = button.getAttribute('data-trip-id');
+        const trip_id = button.getAttribute('data-trip-id');
+        // console.log('Trip ID:', trip_id);
+        // console.log();
+        // const trip_id = button.dataset.tripId;
 
-        // Optimistically toggle UI
         const isStarred = icon.classList.contains('bi-star-fill');
         icon.classList.toggle('bi-star');
         icon.classList.toggle('bi-star-fill');
 
-        // Send update to backend
-        fetch(`/toggle-star/${tripId}`, {
+        fetch(`/toggle-star/${trip_id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -279,7 +279,7 @@
               alert('Failed to update favorite status.');
             }
           })
-          .catch(() => {
+          .catch((err) => {
             console.error('Server error:', err);
             icon.classList.toggle('bi-star');
             icon.classList.toggle('bi-star-fill');

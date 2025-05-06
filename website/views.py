@@ -329,7 +329,7 @@ def update_plan():
     flash('Plan updated successfully!', category='success')
     return redirect('/home')
 
-@views.route('/toggle-star/<int:tripId>', methods=['POST'])
+@views.route('/toggle-star/<int:trip_id>', methods=['POST'])
 def toggle_star(trip_id):
     try:
         data = request.get_json()
@@ -337,14 +337,12 @@ def toggle_star(trip_id):
 
         if starred is None:
             return jsonify(success=False, message="Missing 'starred' value"), 400
-
         trip = Trip.query.get_or_404(trip_id)
 
         # if current user owns this trip
         if trip.user_id != current_user.id:
             return jsonify(success=False, message="Unauthorized"), 403
-
-        trip.starred = starred
+        trip.starred = bool(starred)
         db.session.commit()
 
         return jsonify(success=True)
@@ -353,7 +351,23 @@ def toggle_star(trip_id):
         print(f"Error toggling star: {e}")
         return jsonify(success=False, message="Internal server error"), 500
     
+# def like_trip(trip_id):
+#     trip = Trip.query.get_or_404(trip_id)
+#     if trip.user_id != current_user.id:
+#         abort(403)
+#     favorite = Favorites.query.filter_by(user_id=current_user.id, trip_id=trip_id).first()
 
+#     if favorite:
+#         db.session.delete(favorite)
+#         db.session.commit()
+#         liked = False
+#     else:
+#         new_fav = Favorites(user_id=current_user.id, trip_id=trip_id)
+#         db.session.add(new_fav)
+#         db.session.commit()
+#         liked = True
+
+#     return jsonify({'liked': liked})
 
 @views.route('/generate-itinerary', methods=['POST'])
 def generate_itinerary():
