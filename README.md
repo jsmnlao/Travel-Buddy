@@ -38,7 +38,7 @@ Travel Buddy is designed to tailor to each traveler’s needs by offering users 
 
 ### To execute this project on your machine:
 
-1. Clone the reposity with `git clone` and the web URL found in the `<> Code` drop down above.
+1. Clone the repository with `git clone` and the web URL found in the `<> Code` drop down above.
 2. Download and install Python on your device. You can follow the instructions [here](https://www.python.org/downloads/).
 3. Open the project in an IDE or create a .env file inside the project directory.
    In this file, you will need to get the API Key to add LLaMA. Your .env file should look something like this:
