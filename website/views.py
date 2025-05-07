@@ -206,7 +206,7 @@ def save_plan():
         # Create and insert Flight
         new_flight = Flight(
             airline=airline,
-            flight_number=int(flight_number),
+            flight_number=flight_number,
             departure_date=datetime.strptime(depart_date, '%Y-%m-%d').date(),
             departure_time=datetime.strptime(depart_time, '%H:%M').time(),
             trip_id=new_trip.id
