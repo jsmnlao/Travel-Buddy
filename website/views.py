@@ -8,6 +8,8 @@ from . import db
 from dotenv import load_dotenv
 import os
 import requests
+import json
+import re
 
 load_dotenv()
 
@@ -384,7 +386,7 @@ def generate_itinerary():
         - "name": A short, engaging name for the activity  
         - "address": A specific location, neighborhood, or venue  
         - "date": A real date in YYYY-MM-DD format  
-        - "description": A concise description (1–2 sentences) about the activity
+        - "description": A concise description (1 to 2 sentences) about the activity
 
         Keep each activity realistic and within the budget constraints. Vary activity types (e.g. sightseeing, dining, nature, culture, etc.).
 
@@ -418,8 +420,12 @@ def generate_itinerary():
         result = response.json()
         content = result["choices"][0]["message"]["content"]
 
-        import json
-        activities = json.loads(content)
+        match = re.search(r"\[\s*{.*}\s*\]", content, re.DOTALL)
+        if not match:
+            raise ValueError("No valid JSON array found in LLaMA response.")
+        
+        clean_json = match.group(0)
+        activities = json.loads(clean_json)
 
         return jsonify({ "activities": activities })
 
