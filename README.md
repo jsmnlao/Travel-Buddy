@@ -6,7 +6,7 @@ Travel Buddy aims to ease the stress of planning a trip. Everyone loves to trave
 
 | Name            | GitHub Handle | Contribution |
 | --------------- | ------------- | ------------ |
-| **Jasmine Lao** | @jsmnlao      |              |
+| **Jasmine Lao** | @jsmnlao      | comprehensive dashboard, trip planning, explore page             |
 | **Megan Ju**    | @Megan-J      |              |
 
 ## 🏗️ Project Overview
@@ -18,6 +18,7 @@ Travel Buddy offers a variety of features designed to allow users to customize a
 1. **Comprehensive Dashboard**: This hub presents all the necessary trip information in a user-friendly way. This dashboard gives an organized view of the itinerary, flight information, booking confirmations, and any activities on the schedule. With this feature, every aspect of the trip is contained in one central place for easy access.
 2. **Customizable Trip Planning**: Users can manually input key details such as flight dates and flight number, hotel reservation, and activities. This feature allows user to have full control over their itinerary and fine-tune their trip plans to their personal preferences.
 3. **AI-Generated Itinerary**: By integrating with the LLaMA, users can automatically generate a complete trip itinerary if they don’t know where to start. Based on the user’s destination and budget, this AI-driven feature will recommend a full itinerary and suggest activities for users who are not sure where to begin.
+4. **Explore Page**: Users can see itineraries created by other users of the platform. Users can see what other trip plans look like and even save them to their personal dashboard to reference later. 
 
 Our app aims for a wide range of users who are seeking a simpler way to plan their trips. Our primary audience includes:
 
