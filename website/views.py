@@ -131,12 +131,10 @@ def like_trip(trip_id):
     
 @views.route('/explore/')
 def explore():
-    public_trips = Trip.query.filter(Trip.public == True, Trip.user_id != current_user.id).all()
+    public_trips = Trip.query.filter(Trip.public==True, Trip.user_id != current_user.id).all()     
     favorites = {fav.trip_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
-    
     for trip in public_trips:
         trip.liked = trip.id in favorites
-
     return render_template("explore.html", user=current_user, trips=public_trips, favorites=favorites)
 
 @views.route('/signup')

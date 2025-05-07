@@ -407,11 +407,9 @@
         const endDate = document.getElementById('endDate').value.trim();
         const travelers = document.getElementById('travelers').value.trim();
         const budget = document.getElementById('budget').value.trim();
-        print(destination, startDate, endDate, travelers, budget);
 
         if (!destination || !startDate || !endDate || travelers === '' || Number(travelers) <= 0 || budget === '' || Number(budget) <= 0) {
           alert('Please fill in the Trip Details Section before generating an itinerary.');
-          alert(destination, startDate, endDate, travelers, budget);
           return;
         }
 
