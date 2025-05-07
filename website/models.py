@@ -43,7 +43,7 @@ class Flight(db.Model):
    __tablename__ = 'flight'
    id = db.Column(db.Integer, primary_key=True)
    airline = db.Column(db.String(200))
-   flight_number = db.Column(db.Integer, nullable=False)
+   flight_number = db.Column(db.String(100), nullable=False)
    departure_date = db.Column(db.Date, nullable=False)
    departure_time = db.Column(db.Time, nullable=False)
 
