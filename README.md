@@ -4,10 +4,10 @@ Travel Buddy aims to ease the stress of planning a trip. Everyone loves to trave
 
 ## 🙌 Team Members
 
-| Name            | GitHub Handle | Contribution                                         |
-| --------------- | ------------- | ---------------------------------------------------- |
-| **Jasmine Lao** | @jsmnlao      | comprehensive dashboard, trip planning, explore page |
-| **Megan Ju**    | @Megan-J      | comprehensive dashboard, trip planning, explore page |
+| Name            | GitHub Handle |
+| --------------- | ------------- | 
+| **Jasmine Lao** | @jsmnlao      | 
+| **Megan Ju**    | @Megan-J      | 
 
 ## 🏗️ Project Overview
 
